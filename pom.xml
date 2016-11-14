@@ -5,10 +5,14 @@
     <groupId>fr.miage</groupId>
     <artifactId>S9_Agents</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>S9_Agents</name>
-
+    
+    <modules>
+	<module>messages-api</module>
+    </modules>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mainClass>fr.miage.supermarche.MainApp</mainClass>
