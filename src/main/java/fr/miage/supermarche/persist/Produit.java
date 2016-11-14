@@ -1,6 +1,8 @@
 package fr.miage.supermarche.persist;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -8,48 +10,48 @@ import java.util.Objects;
  * @author Maxime BLAISE
  */
 public class Produit {
-    
+
     private static final String TABLE_NAME = "produit";
     private static final String[] FIELDS = {"reference", "nom", "description", "marque", "type", "prix", "stock"};
-    
+
     /**
      * Référence du produit (clé primaire)
      */
     private String reference;
-    
+
     /**
-     * Nom du produit. 
+     * Nom du produit.
      */
-    private String nom; 
-    
+    private String nom;
+
     /**
-     * Description du produit. 
+     * Description du produit.
      */
     private String description;
-    
+
     /**
      * Marque du produit.
      */
     private String marque;
-    
+
     /**
      * Type du produit.
      */
     private String type;
-    
+
     /**
-     * Prix du produit. 
+     * Prix du produit.
      */
     private double prix;
-    
+
     /**
      * Nombre de ce produit en stock.
      */
-    private int stock; 
+    private int stock;
 
     public Produit() {
     }
-    
+
     public Produit(String reference, String nom, String description, String marque, String type, double prix, int stock) {
         this.reference = reference;
         this.nom = nom;
@@ -59,10 +61,69 @@ public class Produit {
         this.prix = prix;
         this.stock = stock;
     }
+
+    public static ArrayList<Produit> getAllProduit() throws SQLException {
+        String sql = "SELECT * FROM " + TABLE_NAME;
+        ResultSet results = Connector.select(sql);
+
+        ArrayList<Produit> produits = new ArrayList<>();
+        while (results.next()) {
+            // Récupération des informations de la BDD
+            String reference = results.getString("reference");
+            String nom = results.getString("nom");
+            String description = results.getString("description");
+            String marque = results.getString("marque");
+            String type = results.getString("type");
+            Double prix = results.getDouble("prix");
+            Integer stock = results.getInt("stock");
+
+            Produit produit = new Produit(reference, nom, description, marque, type, prix, stock);
+            produits.add(produit);
+        }
+
+        return produits;
+    }
     
-    public void insert() throws SQLException {
-        String sql = "";
+    public static ArrayList<Produit> getAllProduitByCriteres(String criteres) throws SQLException {
+        // TODO Parser
+        String sql = "SELECT * FROM " + TABLE_NAME;
         
+        ResultSet results = Connector.select(sql);
+
+        ArrayList<Produit> produits = new ArrayList<>();
+        while (results.next()) {
+            // Récupération des informations de la BDD
+            String reference = results.getString("reference");
+            String nom = results.getString("nom");
+            String description = results.getString("description");
+            String marque = results.getString("marque");
+            String type = results.getString("type");
+            Double prix = results.getDouble("prix");
+            Integer stock = results.getInt("stock");
+
+            Produit produit = new Produit(reference, nom, description, marque, type, prix, stock);
+            produits.add(produit);
+        }
+
+        return produits;
+    }
+
+    public void insert() throws SQLException {
+        String sql = "INSERT INTO " + TABLE_NAME + "(" + FIELDS[0];
+        for (int i = 1; i < FIELDS.length; i++) {
+            sql += ", " + FIELDS[i];
+        }
+        sql += ") VALUES("
+                + "'" + this.reference + "'"
+                + ", '" + this.nom + "'"
+                + ", '" + this.description + "'"
+                + ", '" + this.marque + "'"
+                + ", '" + this.type + "'"
+                + ", " + this.prix
+                + ", " + this.stock
+                + ")";
+
+        Connector.insert(sql);
     }
 
     @Override
@@ -114,8 +175,6 @@ public class Produit {
         return true;
     }
 
-    
-    
     public String getReference() {
         return reference;
     }
@@ -176,6 +235,5 @@ public class Produit {
     public String toString() {
         return "Produit{" + "reference=" + reference + ", nom=" + nom + ", description=" + description + ", marque=" + marque + ", type=" + type + ", prix=" + prix + ", stock=" + stock + '}';
     }
-    
-    
+
 }
