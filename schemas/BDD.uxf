@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>40</y>
+      <w>200</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>produit
+--
+-ref:           String
+-nom:           String
+-description:   String
+-marque :       String
+-type:          String
+-prix:          Float
+-stock:         int
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>40</y>
+      <w>160</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>promotion
+--
+-id:        int
+-listeRef:  String
+-reduction: int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>200</y>
+      <w>200</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>soldes
+--
+-id:        int
+-dateDebut: Date
+-dateFin:   Date
+-statut:    String</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
