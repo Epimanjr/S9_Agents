@@ -40,7 +40,7 @@ public class ImportHelper {
                 int alea = (int) (Math.random() * 1000);
                 String ref = categorieProduit.substring(0, 2) + nomProduit.substring(0, 2) + alea;
                 String reference = ref.toUpperCase();
-                Produit p = new Produit(ref, nomProduit, descriptionProduit, marqueProduit, categorieProduit, prixProduit, 0);
+                Produit p = new Produit(reference, nomProduit, descriptionProduit, marqueProduit, categorieProduit, prixProduit, 0);
                 try {
                     p.insert();
                 } catch (SQLException ex) {
