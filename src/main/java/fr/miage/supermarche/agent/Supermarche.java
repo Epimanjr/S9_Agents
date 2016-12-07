@@ -4,6 +4,7 @@ import fr.miage.supermarche.behavior.ClientBehavior;
 import fr.miage.supermarche.behavior.FournisseurBehavior;
 import fr.miage.supermarche.behavior.SpermarcheBehavior;
 import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.DFService;
@@ -37,7 +38,7 @@ public class Supermarche extends Agent {
             fe.printStackTrace();
         }
         
-        List<CyclicBehaviour> behaviors = Arrays.asList(new ClientBehavior(), new FournisseurBehavior(), new SpermarcheBehavior());
+        List<Behaviour> behaviors = Arrays.asList(new ClientBehavior(), new FournisseurBehavior(), new SpermarcheBehavior(this, 6000));
         
         behaviors.forEach(it -> addBehaviour(it));
     }
