@@ -3,3 +3,8 @@
 APDescription.txt
 MTPs-Main-Container.txt
 start.sh
+.classpath
+.idea
+.project
+.settings
+S9_agents.iml
