@@ -11,7 +11,7 @@ import jade.core.Agent;
  */
 public class Supermarche extends Agent {
 
-    protected void setUp() {
+    protected void setup() {
         System.out.println("Je suis une super supermarché dont le nom est : " + this.getLocalName());
     }
     
