@@ -1,3 +1,0 @@
-[submodule "agents-api"]
-	path = messages-api
-	url = https://github.com/Nitix/agents-api.git
