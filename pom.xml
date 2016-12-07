@@ -10,7 +10,7 @@
     <name>S9_Agents</name>
     
     <modules>
-	<module>messages-api</module>
+	<module>agents-api</module>
     </modules>
     
     <properties>
@@ -18,9 +18,16 @@
         <mainClass>fr.miage.supermarche.persist.ImportHelper</mainClass>
     </properties>
 
+    <repositories>
+        <repository> 
+            <id>tilab</id> 
+            <url>http://jade.tilab.com/maven/</url> 
+        </repository>
+    </repositories>
+
     <organization>
         <!-- Used as the 'Vendor' for JNLP generation -->
-        <name>Your Organisation</name>
+        <name>M2 MIAGE SID</name>
     </organization>
 
     <dependencies>
@@ -30,7 +37,11 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>6.0.5</version>
         </dependency>
-
+        <dependency>  
+            <groupId>com.tilab.jade</groupId> 
+            <artifactId>jade</artifactId> 
+            <version>4.4.0</version>  
+        </dependency>
     </dependencies>
     
     <build>
