@@ -62,6 +62,28 @@ public class Produit {
         this.stock = stock;
     }
 
+    public static Produit getByReference(String ref) throws SQLException {
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE reference' = " + ref + "'";
+        ResultSet results = Connector.select(sql);
+
+        ArrayList<Produit> produits = new ArrayList<>();
+        while (results.next()) {
+            // Récupération des informations de la BDD
+            String reference = results.getString("reference");
+            String nom = results.getString("nom");
+            String description = results.getString("description");
+            String marque = results.getString("marque");
+            String type = results.getString("type");
+            Double prix = results.getDouble("prix");
+            Integer stock = results.getInt("stock");
+
+            Produit produit = new Produit(reference, nom, description, marque, type, prix, stock);
+            produits.add(produit);
+        }
+
+        return produits.get(0);
+    }
+    
     public static ArrayList<Produit> getAllProduit() throws SQLException {
         String sql = "SELECT * FROM " + TABLE_NAME;
         ResultSet results = Connector.select(sql);
