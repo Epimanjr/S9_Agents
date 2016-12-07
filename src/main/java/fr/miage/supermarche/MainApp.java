@@ -7,7 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
+//java -classpath build/classes:/home/kangoula/Programmes/JADE/jade/lib/jade.jar jade.Boot -gui 
 public class MainApp extends Application {
 
     @Override
