@@ -1,10 +1,17 @@
 package fr.miage.supermarche.agent;
 
+import fr.miage.supermarche.behavior.ClientBehavior;
+import fr.miage.supermarche.behavior.FournisseurBehavior;
+import fr.miage.supermarche.behavior.SpermarcheBehavior;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
+import jade.core.behaviours.CyclicBehaviour;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  *
  * @author Antoine NOSAL
@@ -29,6 +36,10 @@ public class Supermarche extends Agent {
         } catch (FIPAException fe) {
             fe.printStackTrace();
         }
+        
+        List<CyclicBehaviour> behaviors = Arrays.asList(new ClientBehavior(), new FournisseurBehavior(), new SpermarcheBehavior());
+        
+        behaviors.forEach(it -> addBehaviour(it));
     }
 
 }
