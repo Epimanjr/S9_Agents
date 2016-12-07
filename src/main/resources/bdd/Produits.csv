@@ -1,0 +1,149 @@
+Carotte;Bonduel;Légume orange riche en protéines;1.00;Légume
+Poireau;Géant Vert;Légume vert plein de fibre;1.20;Légume
+Citrouille;Cascina Belvedere;Légume orange parfait pour les fêtes d'Halloween;1.95;Légume
+Brie;Président;Fromage de caractère au lait de vache;16.50;Produit laitier
+Comté;Entremont;Fromage au lait cru;15.05;Produit laitier
+Lait;Candia;Produit laitier semi-écrémé;0.70;Produit laitier
+Bière;Chouffe;Boisson alcoolisée à base d'orge et d'houblon;3.78;Boisson
+Eau;Evian;Eau de source;0.57;Boisson
+Coca;Coca cola;Boisson gazeuse sucrée;1.10;Boisson
+Javel;Monsieur Propre;Solution liquide oxydante désinfectante et décolorante;7.92;Produit entretien
+Lave vitre;Kärcher;Solution nettoyante spéciale fenêtre;3.71;Produit entretien
+Liquide vaisselle;Paic;Liquide vaisselle super dégraissant;9.23;Produit entretien
+Parfum;Channel;Fragrance délicate et boisée;56.48;Cosmétique
+Rouge à lèvre;Velvet;Produit de cosmétique permettant de souligner les lèvres;34.50;Cosmétique
+Fond de teint;Maybelline;Produit cosmétique permettant d'unifier et de protéger l'épiderme;28.90;Cosmétique
+Television HD;Samsung;Poste de télévision permettant l'emission et la reception de séquences audiovisuelles;299.99;High-tech
+Smartphone;Sony;GSM nouvelle génération;149.90;High-tech
+Rasoir éléctrique;Phillips;Rasoir performant et plus ergonomique pour un meilleur rasage de la moustache;72.04;High-tech
+Carotte;Grand Frais;Légume orange riche en protéines;1.20;Légume
+Poireau;Cassegrin;Légume vert plein de fibre;1.04;Légume
+Citrouille;Nos régions ont du talent;Légume orange parfait pour les fêtes d'Halloween;2.25;Légume
+Brie;Coeur de lion;Fromage de caractère au lait de vache;14.99;Produit laitier
+Comté;Juraflore;Fromage au lait cru;12.50;Produit laitier
+Lait;Lactel;Produit laitier semi-écrémé;0.98;Produit laitier
+Bière;Kronenbourg;Boisson alcoolisée à base d'orge et d'houblon;1.25;Boisson
+Eau;Vittel;Eau de source;0.48;Boisson
+Coca;Pepsi;Boisson gazeuse sucrée;1.02;Boisson
+Javel;Saint Marc;Solution liquide oxydante désinfectante et décolorante;6.54;Produit entretien
+Lave vitre;Ecovacs;Solution nettoyante spéciale fenêtre;2.60;Produit entretien
+Liquide vaisselle;Mir;Liquide vaisselle super dégraissant;12.60;Produit entretien
+Parfum;Dior;Fragrance délicate et boisée;46.38;Cosmétique
+Rouge à lèvre;L'Oreal;Produit de cosmétique permettant de souligner les lèvres;41.20;Cosmétique
+Fond de teint;Bourjois;Produit cosmétique permettant d'unifier et de protéger l'épiderme;32.50;Cosmétique
+Television HD;LG;Poste de télévision permettant l'emission et la reception de séquences audiovisuelles;199.90;High-tech
+Smartphone;Apple;GSM nouvelle génération;780.00;High-tech
+Rasoir éléctrique;Wilkinson;Rasoir performant et plus ergonomique pour un meilleur rasage de la moustache;68.22;High-tech
+Petits pois;Bonduel;Le must des petits pois;2.00;Légume
+Pommes de terre;Géant Vert;Des patates. toujours des patates;1.70;Légume
+Artichaux;Cascina Belvedere;Superbe pièce murit à souhait;1.60;Légume
+Petits pois;Cascina Belvedere;Le must des petits pois;2.00;Légume
+Pommes de terre;Géant Vert;Des patates. toujours des patates;1.20;Légume
+Artichaux;Cascina Belvedere;Superbe pièce murit à souhait;1.60;Légume
+Tomates;Bonduel;Bien ronde et bien rouge;1.70;Légume
+Brocolis;Géant Vert;Beau brocolis vert;1.60;Légume
+Haricots Verts;Cascina Belvedere;Haricots vert made in France;1.40;Légume
+Tomates;Cascina Belvedere;Bien ronde et bien rouge;1.60;Légume
+Brocolis;Géant Vert;Beau brocolis vert;1.50;Légume
+Haricots Verts;Cascina Belvedere;Haricots vert made in France;1.10;Légume
+Choux fleur;Géant Vert;Choux fleur de nos régions;1.50;Légume
+Choux de bruxelles;Géant Vert;Choux belges plusieurs fois primés;1.90;Légume
+Flageolets;Cascina Belvedere;Flageolets bien ferme et de taille suffisante;1.60;Légume
+Choux fleur;Cascina Belvedere;Choux fleur de nos régions;1.60;Légume
+Choux de bruxelles;Géant Vert;Choux belges plusieurs fois primés;1.20;Légume
+Flageolets;Cascina Belvedere;Flageolets bien ferme et de taille suffisante;1.30;Légume
+Emmentale;Président;Emmentale de montagne;2.10;Produit laitier
+Brie;Entremont;Brie de nos régions;2.30;Produit laitier
+Lait chocolat en brique;Candia;Idéal pour le goûter;2.40;Produit laitier
+Crème fraiche;Président;Idéale pour la cuisine;2.50;Produit laitier
+Fromage en portion;Entremont;Petites portions à emmener partout;2.10;Produit laitier
+Gruyère;Candia;Gruyère à déguster ou à ajouter dans vos plats;2.40;Produit laitier
+Fromage à raclette;Président;Idéal pour une raclette en famille ou amis;2.40;Produit laitier
+Fromage à tartiner;Entremont;Fromage à tartiner idéal pour l'apéro;2.60;Produit laitier
+Emmentale;Candia;Emmentale de montagne;2.30;Produit laitier
+Brie;Entremont;Brie de nos régions;2.60;Produit laitier
+Lait chocolat en brique;Candia;Idéal pour le goûter;2.80;Produit laitier
+Crème fraiche;Président;Idéale pour la cuisine;2.70;Produit laitier
+Fromage en portion;Entremont;Petites portions à emmener partout;2.70;Produit laitier
+Gruyère;Entremont;Gruyère à déguster ou à ajouter dans vos plats;2.80;Produit laitier
+Fromage à raclette;Président;Idéal pour une raclette en famille ou amis;2.30;Produit laitier
+Fromage à tartiner;Candia;Fromage à tartiner idéal pour l'apéro;2.40;Produit laitier
+Fondue;Candia;Fondue savoyarde;2.90;Produit laitier
+Lait de chèvre;Candia;Pour ceux qui aiment le chèvre;2.40;Produit laitier
+Fondue;Entremont;Fondue savoyarde;2.90;Produit laitier
+Lait de chèvre;Entremont;Pour ceux qui aiment le chèvre;2.60;Produit laitier
+Eau de vie;Arthurus;Le meilleur pour les fin de soirée;2.10;Boisson
+Mirabelle;Moureyus;Idéal pour donner un peu de goût à vos repas;2.10;Boisson
+Calva;Alcolus;Pour les hommes. les vrais;2.80;Boisson
+Marc;PuRienBus;Marc mûrit en fût pendant 7 mois;3.00;Boisson
+Whisky;Jack Daniels;Le seul. l'unique;2.90;Boisson
+Vin;Veuve cliquot;Vin de grande qualité;2.70;Boisson
+Snaps;Deutshus;Artoung ça décoiffe;2.70;Boisson
+Jus de raisin;Materne;Jus de raisin 100% pur fruit;2.10;Boisson
+Jus de pomme;Normalus;Pommes issue de l'agriculture biologique;2.20;Boisson
+Eau de vie;Moureyus;Le meilleur pour les fin de soirée;2.70;Boisson
+Mirabelle;Arthurus;Idéal pour donner un peu de goût à vos repas;2.10;Boisson
+Calva;Deutshus;Pour les hommes. les vrais;2.10;Boisson
+Marc;Alcolus;Marc mûrit en fût pendant 7 mois;2.40;Boisson
+Whisky;Shivas;Le seul. l'unique;2.40;Boisson
+Vin;Saint Émilion;Vin de grande qualité;2.10;Boisson
+Snaps;Moureyus;Artoung ça décoiffe;2.60;Boisson
+Jus de raisin;Normalus;Jus de raisin 100% pur fruit;2.50;Boisson
+Jus de pomme;Materne;Pommes issue de l'agriculture biologique;2.90;Boisson
+Déodorisant WC;Monsieur Propre;Idéal pour sentir bon où ça ne sent pas bon;3.10;Produit entretien
+Nettoyant WC;Kärcher;Nettoyage suprême des zones de guerres;3.30;Produit entretien
+Eponge;Paic;A utiliser avec de l'huile de coude;3.80;Produit entretien
+Nettoyant sol;Monsieur Propre;Mettre un bouchon dans 5 litres d'eau;3.60;Produit entretien
+Déboucheur canalisation;Kärcher;Idéal pour le transit de vos canalisations. Ne pas ingérer;3.10;Produit entretien
+Chiffon vitre;Paic;Ne fonctionne pas avec les écrans d'ordinateur;3.70;Produit entretien
+Bombe dépoussiérante;Monsieur Propre;Idéal pour dépoussiérer;3.10;Produit entretien
+Balai;Kärcher;Ne sert pas à voler. mais à nettoyer;3.80;Produit entretien
+Serpillère;Paic;Serpillère 100% pure coton;3.30;Produit entretien
+Déodorisant WC;Kärcher;Idéal pour sentir bon où ça ne sent pas bon;3.10;Produit entretien
+Nettoyant WC;Paic;Nettoyage suprême des zones de guerres;3.90;Produit entretien
+Eponge;Monsieur Propre;A utiliser avec de l'huile de coude;3.70;Produit entretien
+Nettoyant sol;Kärcher;Mettre un bouchon dans 5 litres d'eau;3.60;Produit entretien
+Déboucheur canalisation;Paic;Idéal pour le transit de vos canalisations. Ne pas ingérer;3.10;Produit entretien
+Chiffon vitre;Monsieur Propre;Ne fonctionne pas avec les écrans d'ordinateur;3.90;Produit entretien
+Bombe dépoussiérante;Kärcher;Idéal pour dépoussiérer;3.40;Produit entretien
+Balai;Paic;Ne sert pas à voler. mais à nettoyer;3.10;Produit entretien
+Serpillère;Monsieur Propre;Serpillère 100% pure coton;4.00;Produit entretien
+Poudre BB;Channel;Poudre pour jouer au ninja dans un nuage de fumé;143.90;Cosmétique
+Eye liner;Velvet;Pour des maquillages réussis;93.10;Cosmétique
+Mascarat waterproof;Maybelline;Ne résiste pas à la piscine;9.60;Cosmétique
+Gloss;Channel;Pour augmenter la taille de vos lèvres;104.20;Cosmétique
+Phare à paupière;Velvet;Ne sert pas à attirer les bateaux;185.00;Cosmétique
+Pince à épiler;Maybelline;Sert également à tirer les vers du nez;83.70;Cosmétique
+Bande de cire;Channel;100% avec douleurs;42.50;Cosmétique
+Coton tige;Velvet;100% pure fibre de coton;117.30;Cosmétique
+Crème hydrante;Maybelline;Hydrate la peau en profondeur;104.90;Cosmétique
+Eau miscellaire;Channel;Idéal pour se démaquiller;144.80;Cosmétique
+Anti cernes;Velvet;Pour les lendemains de soirée;122.60;Cosmétique
+Poudre BB;Channel;Poudre pour jouer au ninja dans un nuage de fumé;193.70;Cosmétique
+Eye liner;Velvet;Pour des maquillages réussis;97.20;Cosmétique
+Mascarat waterproof;Maybelline;Ne résiste pas à la piscine;166.20;Cosmétique
+Gloss;Channel;Pour augmenter la taille de vos lèvres;22.00;Cosmétique
+Phare à paupière;Velvet;Ne sert pas à attirer les bateaux;18.30;Cosmétique
+Pince à épiler;Maybelline;Sert également à tirer les vers du nez;80.40;Cosmétique
+Bande de cire;Channel;100% avec douleurs;118.30;Cosmétique
+Coton tige;Velvet;100% pure fibre de coton;145.30;Cosmétique
+Crème hydrante;Maybelline;Hydrate la peau en profondeur;81.50;Cosmétique
+Eau miscellaire;Channel;Idéal pour se démaquiller;154.40;Cosmétique
+Anti cernes;Maybelline;Pour les lendemains de soirée;66.60;Cosmétique
+Four à microonde;Samsung;Four à microonde haut de gamme;87.50;High-tech
+Aspirateur;Sony;Aspirateur sans fil et sans sac;24.90;High-tech
+Grille pain;Phillips;Idéal pour vos tartines du matin;154.30;High-tech
+Ordinateur;Samsung;Ordinateur top moumoute plus;127.20;High-tech
+Tablette;Sony;Tablette idéal pour vos envies de mobilité;35.00;High-tech
+Chaine HiFI;Phillips;Chaine HiFi avec son HD;91.10;High-tech
+Radio;Samsung;Capter toutes vos radios préférées;193.00;High-tech
+Ecran PC;Sony;Ecran 15 pouces LED;191.90;High-tech
+Four à microonde;Sony;Four à microonde haut de gamme;135.50;High-tech
+Aspirateur;Phillips;Aspirateur sans fil et sans sac;77.70;High-tech
+Grille pain;Samsung;Idéal pour vos tartines du matin;150.00;High-tech
+Ordinateur;Sony;Ordinateur top moumoute plus;120.60;High-tech
+Tablette;Phillips;Tablette idéal pour vos envies de mobilité;34.30;High-tech
+Chaine HiFI;Samsung;Chaine HiFi avec son HD;162.20;High-tech
+Radio;Sony;Capter toutes vos radios préférées;112.80;High-tech
+Ecran PC;Phillips;Ecran 15 pouces LED;195.50;High-tech
+Montre connectée;Apple;Montre connectée répondant à tous vos besoins;183.60;High-tech
