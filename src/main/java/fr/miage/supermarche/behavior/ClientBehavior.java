@@ -11,6 +11,7 @@ import fr.miage.agents.api.message.recherche.ResultatRecherche;
 import fr.miage.agents.api.message.relationclientsupermarche.Achat;
 import fr.miage.agents.api.message.relationclientsupermarche.ResultatDistance;
 import fr.miage.agents.api.model.Produit;
+import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
@@ -25,6 +26,10 @@ import java.util.logging.Logger;
  */
 public class ClientBehavior extends CyclicBehaviour {
 
+    public ClientBehavior(Agent a) {
+        super(a);
+    }
+    
     @Override
     public void action() {
         ACLMessage aclMsg = this.getAgent().receive();

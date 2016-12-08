@@ -13,7 +13,7 @@ import fr.miage.supermarche.util.strategy.TarificationStrategy;
 public class Tarification{
     
     /**
-     * Stratégie de gestion
+     * Stratégie de gestion des tarifs
      */
     private TarificationStrategy strategy;
     

@@ -38,8 +38,8 @@ public class SpermarcheBehavior extends TickerBehaviour {
      * Instance une SupermarcheBehavior qui
      * s'occupe de toute la gestion interne
      *
-     * @param a Agent implémentant ce comportement
-     * @param period Le comportement est répété selon cette période
+     * @param a         Agent implémentant ce comportement
+     * @param period    Le comportement est répété selon cette période
      */
     public SpermarcheBehavior(Agent a, long period) {
         super(a, period);
