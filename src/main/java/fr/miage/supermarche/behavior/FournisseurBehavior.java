@@ -46,7 +46,13 @@ public class FournisseurBehavior extends CyclicBehaviour{
 
                 switch (recu.type) {
                     case demandeReapprov :
-                    
+                        // Pour tous les éléments de la liste aCommander
+                            // InitierAchat
+                            // --> Résultat
+                            // Negocier prix (n fois)
+                            // --> Résultat (n fois)
+                            // FinaliserAchat ou AnnulerAchat en fonction de la stratégie
+                            // --> Résultat
                         break;
                     default:
                         break;
