@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fr.miage.supermarche.behavior;
 
 import fr.miage.agents.api.message.Message;
@@ -16,6 +11,8 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,9 +31,6 @@ public class ClientBehavior extends CyclicBehaviour {
     public void action() {
         ACLMessage aclMsg = this.getAgent().receive();
 
-        // Notre liste de produits
-        List<Produit> produits;
-
         // On gère le message reçu par la plateforme
         if (aclMsg != null) {
             try {
@@ -47,14 +41,7 @@ public class ClientBehavior extends CyclicBehaviour {
                     // Le client désire rechercher un Produit
                     case Recherche:
                         Rechercher r = (Rechercher) recu;
-
-                        //TODO récupérer le produit depuis nos données
-                        produits = null;
-
-                        // on met notre liste dans un message
-                        ResultatRecherche rr = new ResultatRecherche();
-                        rr.produitList = produits;
-                        rr.Session = r.session;
+                        this.gererRecherche(r);  
                         break;
 
                     // On reçoit une demande pour acheter des produits
@@ -66,18 +53,7 @@ public class ClientBehavior extends CyclicBehaviour {
                         break;
                     // Demande de la distance
                     case DemandeDistance:
-                        // On récupère la distance \m/
-                        double distance = 66.6;
-                        int delai = 3;
-                        ResultatDistance rd = new ResultatDistance();
-                        rd.distance = distance;
-                        rd.delai = delai;
-                        
-                        // Envoit du résultat
-                        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                        msg.setContentObject(rd);
-                        this.getAgent().send(msg);
-                        
+                        this.gererDemandeDistance();
                         break;
                     default:
                         break;
@@ -85,10 +61,59 @@ public class ClientBehavior extends CyclicBehaviour {
 
             } catch (UnreadableException e) {
                 Logger.getLogger(ClientBehavior.class.getName()).log(Level.SEVERE, null, e);
-            } catch (IOException ex) {
-                Logger.getLogger(ClientBehavior.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
+    
+    /**
+     * Gère les demandes de distance
+     */
+    private void gererDemandeDistance(){
+        // on récupère notre distance \m/
+        double distance = 66.6;
+        int delai = 3;
+        ResultatDistance rd = new ResultatDistance();
+        rd.distance = distance;
+        rd.delai = delai;
+        
+        // on envoit notre réponse
+        this.envoyerMessage(rd);
+    }
+    
+    /**
+     * Gère la recherche d'un produit
+     * @param r le message reçu avec les informatios de Recherche
+     */
+    private void gererRecherche(Rechercher r) {
+        // Notre liste de produits
+        List<Produit> produits = new ArrayList<Produit>();
+        //produits = RequetesClient.getPrixWithRef(r.idProduit);
 
+        // on met notre liste dans un message de l'api
+        ResultatRecherche rr = new ResultatRecherche();
+        rr.produitList = produits;
+        rr.Session = r.session;
+        
+        // on envoit le message
+        this.envoyerMessage(rr);
+    }
+    
+    /**
+     * Envoi le message aux agents
+     * @param s l'objet de l'api à envoyer
+     */
+    private void envoyerMessage(Serializable s){
+        try {
+            // création du message pour JADE
+            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            msg.setContentObject(s);
+            
+            // envoit du message
+            this.getAgent().send(msg);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ClientBehavior.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
 }
