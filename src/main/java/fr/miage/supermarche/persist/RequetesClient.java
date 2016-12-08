@@ -13,9 +13,35 @@ import java.util.List;
  */
 public class RequetesClient {
 
+    /**
+     * Permet de récupérer les produits en fonction de critères.
+     * 
+     * @param nom
+     * @param categorie
+     * @param marque
+     * @param prixMin
+     * @param prixMax
+     * @return Liste d'identifiants de produits
+     * @throws SQLException Si erreur de connexion à la base. 
+     */
+    public static List<Integer> getIdWithCriteres(String nom, String categorie, String marque, int prixMin, int prixMax) throws SQLException {
+        List<Integer> produits = new ArrayList<>();
+        ResultSet results = Connector.select("SELECT id, nom, description, marque, prix FROM produit");
+        while(results.next()) {
+            // TODO ajouter produit à la liste si compatible
+            
+        }
+        return produits;
+    }
     
+    /**
+     * Permet de récupérer les produits en fonction de critères.
+     * 
+     * @param criteres Critères souhaités
+     * @return Liste d'identifiants de produits
+     * @throws SQLException Si erreur de connexion à la base. 
+     */
     public static List<Integer> getIdWithCriteres(String criteres) throws SQLException {
-        // TODO
         double seuil = 30.0;
         
         List<Integer> produits = new ArrayList<>();
