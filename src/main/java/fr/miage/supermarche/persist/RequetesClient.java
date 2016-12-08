@@ -3,6 +3,7 @@ package fr.miage.supermarche.persist;
 import fr.miage.supermarche.exception.ProduitNotFoundException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,9 +15,33 @@ public class RequetesClient {
 
     
     public static List<Integer> getIdWithCriteres(String criteres) throws SQLException {
-        // TODO 
+        // TODO
+        double seuil = 30.0;
         
-        return null;
+        List<Integer> produits = new ArrayList<>();
+        ResultSet results = Connector.select("SELECT id, nom, description, marque FROM produit");
+        while(results.next()) {
+            List<String> mots = new ArrayList<>();
+            String[] tab1 = results.getString("nom").split(" ");
+            String[] tab2 = results.getString("description").split(" ");
+            String[] tab3 = results.getString("marque").split(" ");
+            
+            for(String s: tab1) mots.add(s.toLowerCase());
+            for(String s: tab2) mots.add(s.toLowerCase());
+            for(String s: tab3) mots.add(s.toLowerCase());
+            
+            int nbOccurences = 0;
+            String[] criteresTab = criteres.toLowerCase().split(" ");
+            for(String mot: criteresTab) {
+                if(mots.contains(mot)) nbOccurences++;
+            }
+            
+            double nb = nbOccurences * 100 / criteresTab.length;
+            if(nb > seuil) {
+                produits.add(results.getInt("id"));
+            }
+        }
+        return produits;
     }
     
     /**
