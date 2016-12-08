@@ -1,3 +1,0 @@
-[submodule "agents-api"]
-	path = agents-api
-	url = git@github.com:Kangoula/agents-api.git
