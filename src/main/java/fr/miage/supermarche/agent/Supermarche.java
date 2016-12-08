@@ -38,7 +38,7 @@ public class Supermarche extends Agent {
             fe.printStackTrace();
         }
         
-        List<Behaviour> behaviors = Arrays.asList(new ClientBehavior(), new FournisseurBehavior(), new SpermarcheBehavior(this, 6000));
+        List<Behaviour> behaviors = Arrays.asList(new ClientBehavior(this), new FournisseurBehavior(this), new SpermarcheBehavior(this, 6000));
         
         behaviors.forEach(it -> addBehaviour(it));
     }

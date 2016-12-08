@@ -2,18 +2,13 @@ package fr.miage.supermarche.behavior;
 
 import fr.miage.supermarche.util.PeriodeType;
 import fr.miage.supermarche.util.Periode;
-import fr.miage.supermarche.persist.Produit;
 import fr.miage.supermarche.util.strategy.PeriodeSimpleStrategy;
 import fr.miage.supermarche.util.Stock;
+import fr.miage.supermarche.util.Tarification;
 import fr.miage.supermarche.util.strategy.StockSimpleStrategy;
+import fr.miage.supermarche.util.strategy.TarificationSimpleStrategy;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -35,10 +30,16 @@ public class SpermarcheBehavior extends TickerBehaviour {
     private Periode periodeActuelle;
 
     /**
-     * Instancie un
+     * Tarification
+     */
+    private Tarification tarification;
+    
+    /**
+     * Instance une SupermarcheBehavior qui
+     * s'occupe de toute la gestion interne
      *
-     * @param a Agent implémentant ce comportement
-     * @param period Le comportement est répété selon cette période
+     * @param a         Agent implémentant ce comportement
+     * @param period    Le comportement est répété selon cette période
      */
     public SpermarcheBehavior(Agent a, long period) {
         super(a, period);
@@ -48,6 +49,9 @@ public class SpermarcheBehavior extends TickerBehaviour {
         // Création d'une période et sélection de la stratégie de calcul
         this.periodeActuelle = new Periode(null, null, PeriodeType.STANDARD);
         this.periodeActuelle.setStrategy(new PeriodeSimpleStrategy());
+        // Création d'une tarification et sélection de la stratégie de calcul
+        this.tarification = new Tarification();
+        this.tarification.setStrategy(new TarificationSimpleStrategy());
     }
 
     /**
@@ -82,6 +86,7 @@ public class SpermarcheBehavior extends TickerBehaviour {
         }    
         
         // Gestion des PVHT (Prix de Vente Hors Taxes)
+        this.tarification.update();
         
     }
 
