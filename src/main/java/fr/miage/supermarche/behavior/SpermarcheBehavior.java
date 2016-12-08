@@ -22,6 +22,11 @@ public class SpermarcheBehavior extends TickerBehaviour {
      * Quantités minimum pour chaque produit
      */
     private Map<String, Integer> qteMinProduits;
+    
+    /**
+     * Indique si la période actuelle est une période standard (janv. à octo.)
+     */
+    private boolean periodeStandard;
 
     /**
      * Instancie un
@@ -66,6 +71,8 @@ public class SpermarcheBehavior extends TickerBehaviour {
         }
 
         // Gestion des soldes
+        
+        
         // Gestion des PVHT (Prix de Vente Hors Taxes)
     }
 
