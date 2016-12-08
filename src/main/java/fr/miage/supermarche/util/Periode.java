@@ -3,7 +3,8 @@ package fr.miage.supermarche.util;
 import java.util.Date;
 
 /**
- *
+ * Classe de gestion des périodes (standard, soldes, etc.) d'un supermarché
+ * (s'appuie sur une stratégie à choisir)
  * @author Antoine NOSAL
  * @author Maxime BLAISE
  * @author Guillaume DÉNISSE
@@ -11,7 +12,9 @@ import java.util.Date;
  */
 public class Periode {
 
-    // Stratégie de calcul
+    /**
+     * Stratégie de calcul
+     */
     private PeriodeStrategy strategy;
     
     private Date dateDebut;
@@ -26,6 +29,12 @@ public class Periode {
         this.prevenirSoldesFlottantes = false;
     }
     
+    /**
+     * Définit ou non une nouvelle période en
+     * fonction d'une période en paramètre
+     * @param p Période à traiter
+     * @return 
+     */
     public Periode define(Periode p) {
         return strategy.define(p);
     }

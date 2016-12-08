@@ -4,6 +4,8 @@ import fr.miage.supermarche.util.PeriodeType;
 import fr.miage.supermarche.util.Periode;
 import fr.miage.supermarche.persist.Produit;
 import fr.miage.supermarche.util.PeriodeSimpleStrategy;
+import fr.miage.supermarche.util.Stock;
+import fr.miage.supermarche.util.StockSimpleStrategy;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import java.sql.SQLException;
@@ -23,9 +25,9 @@ import java.util.logging.Logger;
 public class SpermarcheBehavior extends TickerBehaviour {
 
     /**
-     * Quantités minimum pour chaque produit
+     * Stock à gérer
      */
-    private Map<String, Integer> qteMinProduits;
+    private Stock stock;
     
     /**
      * Période actuelle (standard, fêtes, soldes flottantes)
@@ -40,18 +42,12 @@ public class SpermarcheBehavior extends TickerBehaviour {
      */
     public SpermarcheBehavior(Agent a, long period) {
         super(a, period);
-        this.initQteMinProduits();
+        // Création d'un stock et sélection de la stratégie
+        this.stock = new Stock();
+        this.stock.setStrategy(new StockSimpleStrategy());
         // Création d'une période et sélection de la stratégie de calcul
         this.periodeActuelle = new Periode(null, null, PeriodeType.STANDARD);
         this.periodeActuelle.setStrategy(new PeriodeSimpleStrategy());
-    }
-
-    public void initQteMinProduits() {
-        this.qteMinProduits.put("BOBI16", 250);
-        this.qteMinProduits.put("BOEA901", 100);
-        this.qteMinProduits.put("BOMI952", 150);
-        this.qteMinProduits.put("BOSN991", 50);
-        this.qteMinProduits.put("BOWH188", 450);
     }
 
     /**
@@ -60,22 +56,9 @@ public class SpermarcheBehavior extends TickerBehaviour {
     @Override
     protected void onTick() {
         // Gestion des stocks
-        try {
-            // Pour chaque quantité minimale par produit
-            for (Map.Entry<String, Integer> qteMinProduit : this.qteMinProduits.entrySet()) {
-                Produit produit = Produit.getByReference(qteMinProduit.getKey());
-                /**
-                 * STRATÉGIE
-                 * Si le stock disponible est inférieure à la moitié de la quantité souhaitée
-                 * On doit se réapprovisionner
-                 */
-                if (produit.getStock() < qteMinProduit.getValue() / 2) {
-                    // TODO (lancer un réapprovisionnement)
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(SpermarcheBehavior.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.stock.analyse();
+        // TODO : envoyer la map this.stock.aCommander à la gestion des fournisseurs
+        // Cette map contient la liste des produits à réapprovisionner avec la quantité
 
         // Gestion des périodes
         this.periodeActuelle = this.periodeActuelle.define(periodeActuelle);
