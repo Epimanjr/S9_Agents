@@ -1,5 +1,7 @@
 package fr.miage.supermarche.behavior;
 
+import fr.miage.supermarche.util.MessageInterne;
+import fr.miage.supermarche.util.MessageInterneType;
 import fr.miage.supermarche.util.PeriodeType;
 import fr.miage.supermarche.util.Periode;
 import fr.miage.supermarche.util.strategy.PeriodeSimpleStrategy;
@@ -9,6 +11,11 @@ import fr.miage.supermarche.util.strategy.StockSimpleStrategy;
 import fr.miage.supermarche.util.strategy.TarificationSimpleStrategy;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
+import jade.lang.acl.ACLMessage;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -61,8 +68,15 @@ public class SpermarcheBehavior extends TickerBehaviour {
     protected void onTick() {
         // Gestion des stocks
         this.stock.analyse();
-        // TODO : envoyer la map this.stock.aCommander à la gestion des fournisseurs
+        // Envoyer la map this.stock.aCommander à la gestion des fournisseurs si elle n'est pas vide
         // Cette map contient la liste des produits à réapprovisionner avec la quantité
+        if(!this.stock.getaCommander().isEmpty()) {
+            MessageInterne message = new MessageInterne(MessageInterneType.demandeReapprov);
+            message.aCommander = this.stock.getaCommander();
+            // TODO : Envoyer le message au fournisseur
+            // Je ne pense pas que la méthode envoyerMessage fait le job
+            this.envoyerMessage(this);
+        }
 
         // Gestion des périodes
         this.periodeActuelle = this.periodeActuelle.define(periodeActuelle);
@@ -87,6 +101,25 @@ public class SpermarcheBehavior extends TickerBehaviour {
         
         // Gestion des PVHT (Prix de Vente Hors Taxes)
         this.tarification.update();
+        
+    }
+    
+    /**
+     * Envoi le message aux agents
+     * @param s l'objet à envoyer
+     */
+    private void envoyerMessage(Serializable s){
+        try {
+            // création du message pour JADE
+            ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            msg.setContentObject(s);
+            
+            // envoit du message
+            this.getAgent().send(msg);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ClientBehavior.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
 

@@ -46,7 +46,13 @@ public class Stock{
     public void setStrategy(StockStrategy strategy) {
         this.strategy = strategy;
     }
-    
-    
+
+    public Map<Integer, Integer> getaCommander() {
+        return aCommander;
+    }
+
+    public void setaCommander(Map<Integer, Integer> aCommander) {
+        this.aCommander = aCommander;
+    }
     
 }
