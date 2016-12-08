@@ -1,5 +1,6 @@
 package fr.miage.supermarche.util;
 
+import fr.miage.supermarche.util.strategy.PeriodeStrategy;
 import java.util.Date;
 
 /**

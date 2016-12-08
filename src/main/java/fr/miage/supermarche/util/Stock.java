@@ -1,5 +1,6 @@
 package fr.miage.supermarche.util;
 
+import fr.miage.supermarche.util.strategy.StockStrategy;
 import java.util.HashMap;
 import java.util.Map;
 

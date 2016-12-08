@@ -1,7 +1,8 @@
-package fr.miage.supermarche.util;
+package fr.miage.supermarche.util.strategy;
 
 import fr.miage.supermarche.behavior.SpermarcheBehavior;
 import fr.miage.supermarche.persist.Produit;
+import fr.miage.supermarche.util.Stock;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.logging.Level;

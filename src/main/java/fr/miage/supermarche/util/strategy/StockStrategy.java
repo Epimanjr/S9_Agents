@@ -1,4 +1,6 @@
-package fr.miage.supermarche.util;
+package fr.miage.supermarche.util.strategy;
+
+import fr.miage.supermarche.util.Stock;
 
 /**
  *
