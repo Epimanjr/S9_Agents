@@ -1,6 +1,8 @@
 package fr.miage.supermarche.behavior;
 
+import fr.miage.supermarche.util.AchatFournisseur;
 import fr.miage.supermarche.util.MessageInterne;
+import fr.miage.supermarche.util.strategy.AchatFournisseurSimpleStrategy;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -17,8 +19,19 @@ import java.util.logging.Logger;
  */
 public class FournisseurBehavior extends CyclicBehaviour{
 
+    /**
+     * 
+     */
+    private AchatFournisseur achatFournisseur;
+    
+    /**
+     * Construit un comportement fournisseur depuis un agent
+     * @param a 
+     */
     public FournisseurBehavior(Agent a) {
         super(a);
+        this.achatFournisseur = new AchatFournisseur();
+        this.achatFournisseur.setStrategy(new AchatFournisseurSimpleStrategy());
     }
     
     @Override
