@@ -11,6 +11,9 @@ import java.util.Date;
  */
 public class Periode {
 
+    // Stratégie de calcul
+    private PeriodeStrategy strategy;
+    
     private Date dateDebut;
     private Date dateFin;
     private PeriodeType type;
@@ -23,16 +26,8 @@ public class Periode {
         this.prevenirSoldesFlottantes = false;
     }
     
-    public static Periode calculate(Periode p) {
-        // Si (soldesFlottantes && (dateCourante != dateFin+1))
-            // Alors return p
-        // Sinon
-            // Si on est le 1er janvier
-                // Alors return nouvelle période standard
-            // Sinon
-                // Si on est le 1er novembre
-                    // Alors return nouvelle période soldes_fêtes
-        return p;
+    public Periode define(Periode p) {
+        return strategy.define(p);
     }
 
     public Date getDateDebut() {
@@ -65,6 +60,14 @@ public class Periode {
 
     public void setPrevenirSoldesFlottantes(boolean prevenirSoldesFlottantes) {
         this.prevenirSoldesFlottantes = prevenirSoldesFlottantes;
+    }
+
+    public PeriodeStrategy getStrategy() {
+        return strategy;
+    }
+
+    public void setStrategy(PeriodeStrategy strategy) {
+        this.strategy = strategy;
     }
     
 }

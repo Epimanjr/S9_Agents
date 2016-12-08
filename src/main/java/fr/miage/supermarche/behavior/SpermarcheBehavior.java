@@ -3,6 +3,7 @@ package fr.miage.supermarche.behavior;
 import fr.miage.supermarche.util.PeriodeType;
 import fr.miage.supermarche.util.Periode;
 import fr.miage.supermarche.persist.Produit;
+import fr.miage.supermarche.util.PeriodeSimpleStrategy;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import java.sql.SQLException;
@@ -40,7 +41,9 @@ public class SpermarcheBehavior extends TickerBehaviour {
     public SpermarcheBehavior(Agent a, long period) {
         super(a, period);
         this.initQteMinProduits();
+        // Création d'une période et sélection de la stratégie de calcul
         this.periodeActuelle = new Periode(null, null, PeriodeType.STANDARD);
+        this.periodeActuelle.setStrategy(new PeriodeSimpleStrategy());
     }
 
     public void initQteMinProduits() {
@@ -74,7 +77,8 @@ public class SpermarcheBehavior extends TickerBehaviour {
             Logger.getLogger(SpermarcheBehavior.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        // Gestion des soldes
+        // Gestion des périodes
+        this.periodeActuelle = this.periodeActuelle.define(periodeActuelle);
         if(this.periodeActuelle.isPrevenirSoldesFlottantes()) {
             // TODO (prévenir les clients : soldes dans 2 semaines)
         }
@@ -92,11 +96,10 @@ public class SpermarcheBehavior extends TickerBehaviour {
                 break;
             default:
                 break;
-        }
-        
-                
+        }    
         
         // Gestion des PVHT (Prix de Vente Hors Taxes)
+        
     }
 
 }
