@@ -1,4 +1,4 @@
-package fr.miage.supermarche.behavior;
+package fr.miage.supermarche.util;
 
 /**
  *

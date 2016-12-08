@@ -1,9 +1,12 @@
 package fr.miage.supermarche.behavior;
 
+import fr.miage.supermarche.util.PeriodeType;
+import fr.miage.supermarche.util.Periode;
 import fr.miage.supermarche.persist.Produit;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -24,9 +27,9 @@ public class SpermarcheBehavior extends TickerBehaviour {
     private Map<String, Integer> qteMinProduits;
     
     /**
-     * Indique si la période actuelle est une période standard (janv. à octo.)
+     * Période actuelle (standard, fêtes, soldes flottantes)
      */
-    private boolean periodeStandard;
+    private Periode periodeActuelle;
 
     /**
      * Instancie un
@@ -37,6 +40,7 @@ public class SpermarcheBehavior extends TickerBehaviour {
     public SpermarcheBehavior(Agent a, long period) {
         super(a, period);
         this.initQteMinProduits();
+        this.periodeActuelle = new Periode(null, null, PeriodeType.STANDARD);
     }
 
     public void initQteMinProduits() {
@@ -71,7 +75,26 @@ public class SpermarcheBehavior extends TickerBehaviour {
         }
 
         // Gestion des soldes
+        if(this.periodeActuelle.isPrevenirSoldesFlottantes()) {
+            // TODO (prévenir les clients : soldes dans 2 semaines)
+        }
+        switch (this.periodeActuelle.getType()) {
+            case STANDARD:
+                // Impossible de vendre à perte
+                break;
+            case SOLDES_FETES:
+                // Possible de faire des promotions en réduisant les prix jusqu’à 30%
+                // à condition qu’il s’agisse de lots de produits différents
+                break;
+            case SOLDES_FLOTTANTES:
+                // Prévenir tous les agents au moins 2 semaines avant 
+                // Possible de faire des réductions sans aller en-deçà du prix coûtant
+                break;
+            default:
+                break;
+        }
         
+                
         
         // Gestion des PVHT (Prix de Vente Hors Taxes)
     }
