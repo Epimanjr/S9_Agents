@@ -33,9 +33,49 @@ public class RequetesInternes {
                         Integer newStock = stockProduit - qteProduit;
                         String sqlUpdate = "UPDATE produit set stock=" + newStock + " WHERE id=" + idProduit;
                         Connector.insert(sqlUpdate);
+                        mapResults.put(idProduit, true);
                     } else {
                         mapResults.put(idProduit, false);
                     }
+                } else {
+                    // Normalement on est forcément obligé de trouver le produit... 
+                    mapResults.put(idProduit, false);
+                }
+            } catch (SQLException ex) {
+                System.err.println("Erreur: impossible de récupérer ou modifier le stock du produit " + idProduit);
+                ex.printStackTrace();
+            }
+
+        }
+        return mapResults;
+    }
+
+    /**
+     * Permet d'ajouter des produits du stock de notre base. Par exemple après
+     * un achat auprès d'un fournisseur.
+     *
+     * @param mapProduits Produits que l'on ajoute avec la quantité associée
+     * @return Map pour avoir le compte-rendu des produits retirés
+     */
+    public static HashMap<Integer, Boolean> ajouterProduits(HashMap<Integer, Integer> mapProduits) {
+        HashMap<Integer, Boolean> mapResults = new HashMap<>();
+
+        // Parcours des produits de la map 
+        Iterator<Integer> itProduits = mapProduits.keySet().iterator();
+        while (itProduits.hasNext()) {
+            Integer idProduit = itProduits.next();
+            Integer qteProduit = mapProduits.get(idProduit);
+
+            try {
+                String sql = "SELECT stock FROM produit WHERE id=" + idProduit;
+                ResultSet result = Connector.select(sql);
+                if (result.next()) {
+                    Integer stockProduit = result.getInt("stock");
+                    Integer newStock = stockProduit + qteProduit;
+
+                    String sqlUpdate = "UPDATE produit set stock=" + newStock + " WHERE id=" + idProduit;
+                    Connector.insert(sqlUpdate);
+                    mapResults.put(idProduit, true);
                 } else {
                     // Normalement on est forcément obligé de trouver le produit... 
                     mapResults.put(idProduit, false);
