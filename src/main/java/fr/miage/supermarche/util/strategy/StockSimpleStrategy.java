@@ -4,6 +4,7 @@ import fr.miage.supermarche.behavior.SpermarcheBehavior;
 import fr.miage.supermarche.persist.Produit;
 import fr.miage.supermarche.util.Stock;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +26,7 @@ public class StockSimpleStrategy implements StockStrategy {
     private Map<String, Integer> qteMinProduits;
 
     public StockSimpleStrategy() {
+        this.qteMinProduits = new HashMap<>();
         this.initQteMinProduits();
     }
     
@@ -56,6 +58,14 @@ public class StockSimpleStrategy implements StockStrategy {
         } catch (SQLException ex) {
             Logger.getLogger(SpermarcheBehavior.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public void lancerReapprov(Stock s) {
+        /*for (Map.Entry<Integer, Integer> aCommander : s.getaCommander().entrySet()) {
+            
+        }*/
+        
     }
 
 }
