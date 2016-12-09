@@ -5,7 +5,10 @@ import fr.miage.agents.api.message.TypeMessage;
 import fr.miage.agents.api.message.negociation.FinaliserAchat;
 import fr.miage.agents.api.message.negociation.InitierAchat;
 import fr.miage.agents.api.message.negociation.NegocierPrix;
+import fr.miage.agents.api.message.negociation.ResultatFinalisationAchat;
 import fr.miage.agents.api.message.negociation.ResultatInitiationAchat;
+import fr.miage.agents.api.message.negociation.ResultatNegociation;
+import fr.miage.supermarche.persist.RequetesInternes;
 import fr.miage.supermarche.util.AchatFournisseur;
 import fr.miage.supermarche.util.MessageInterne;
 import fr.miage.supermarche.util.SessionAchat;
@@ -36,10 +39,10 @@ public class FournisseurBehavior extends CyclicBehaviour {
     private AchatFournisseur achatFournisseur;
 
     /**
-     * 
+     *
      */
     private Map<UUID, SessionAchat> sessionsActives;
-    
+
     /**
      * Construit un comportement fournisseur depuis un agent
      *
@@ -50,7 +53,7 @@ public class FournisseurBehavior extends CyclicBehaviour {
         this.achatFournisseur = new AchatFournisseur();
         this.achatFournisseur.setStrategy(new AchatFournisseurSimpleStrategy());
     }
-    
+
     @Override
     public void action() {
         try {
@@ -63,9 +66,10 @@ public class FournisseurBehavior extends CyclicBehaviour {
                     MessageInterne recu = (MessageInterne) aclMsg.getContentObject();
                     switch (recu.type) {
                         case demandeReapprov:
+                            // ETAPE 0 : On reçoit une demande de réapprovisionnement
                             // Pour tous les éléments de la liste aCommander
                             for (Map.Entry<Integer, Integer> aCommander : recu.aCommander.entrySet()) {
-                                // InitierAchat
+                                // ETAPTE 1 : On envoie une demande InitierAchat aux fournisseurs
                                 UUID UUIDsessionActive = UUID.randomUUID();
                                 InitierAchat ia = new InitierAchat();
                                 ia.session = UUIDsessionActive;
@@ -89,38 +93,58 @@ public class FournisseurBehavior extends CyclicBehaviour {
                     Message recu = (Message) aclMsg.getContentObject();
                     switch (recu.type) {
                         case ResultatInitiationAchat:
-                            // Pour tous les éléments de la liste aCommander
+                            // ETAPE 2 : On reçoit un résultat avec une 1ère proposition de prix
+                            // (la stratégie va nous faire ou non entamer une négociation)
                             ResultatInitiationAchat ria = (ResultatInitiationAchat) recu;
                             if (ria.success) {
                                 SessionAchat sa = this.sessionsActives.get(ria.session);
-                                this.achatFournisseur.setIdProduit(sa.getIdProduit());
-                                this.achatFournisseur.setPrix(ria.prixFixe);
-                                this.achatFournisseur.setQteSouhaitee(sa.getQteSouhaitee());
-                                this.achatFournisseur.setQteDisponibleChezFournisseur(ria.quantiteDisponible);
-                                if (this.achatFournisseur.approuver()) {
-                                    // Si l'achat est approuvé selon la startégie
-                                    FinaliserAchat fa = new FinaliserAchat();
-                                    fa.session = ria.session;
-                                    this.envoyerMessage(fa);
-                                } else {
-                                    // Si on est pas d'accord, on doit négocier
-                                    NegocierPrix ng = new NegocierPrix();
-                                    ng.session = ria.session;
-                                    ng.idProduit = sa.getIdProduit();
-                                    ng.prixDemande = this.achatFournisseur.getPrixANegocier();
-                                    ng.quantiteDemande = sa.getQteSouhaitee();
-                                    this.envoyerMessage(ng);
-                                }
+                                this.negocier(sa, ria.session, ria.prixFixe, ria.quantiteDisponible);
                             }
+                            break;
+                        case ResultatFinalisationAchat:
+                            // ETAPE 4 : Si on est OK, on finalise l'achat
+                            ResultatFinalisationAchat rfa = (ResultatFinalisationAchat) recu;
+                            SessionAchat sa_rfa = this.sessionsActives.get(rfa.session);
+                            Integer idProduit = Integer.parseInt(rfa.idProduit + "");
+                            Integer qteAchetee = rfa.quantiteProduit;
+                            RequetesInternes.ajouterProduit(idProduit, qteAchetee);
+                            this.sessionsActives.remove(sa_rfa);
+                            break;
+                        case ResultatNegociation:
+                            // ETAPE 3 : Si on a tenté de négocier, il faut traiter la nouvelle proposition
+                            ResultatNegociation rn = (ResultatNegociation) recu;
+                            SessionAchat sa_rn = this.sessionsActives.get(rn.session);
+                            this.negocier(sa_rn, rn.session, rn.prixNegocie, rn.quantiteDisponible);
                             break;
                         default:
                             break;
                     }
                 }
-                
+
             }
         } catch (UnreadableException ex) {
             Logger.getLogger(FournisseurBehavior.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void negocier(SessionAchat sa, UUID session, float prix, Integer qteDispo) {
+        this.achatFournisseur.setIdProduit(sa.getIdProduit());
+        this.achatFournisseur.setPrix(prix);
+        this.achatFournisseur.setQteSouhaitee(sa.getQteSouhaitee());
+        this.achatFournisseur.setQteDisponibleChezFournisseur(qteDispo);
+        if (this.achatFournisseur.approuver()) {
+            // Si l'achat est approuvé selon la startégie
+            FinaliserAchat fa = new FinaliserAchat();
+            fa.session = session;
+            this.envoyerMessage(fa);
+        } else {
+            // Si on est pas d'accord, on doit négocier
+            NegocierPrix ng = new NegocierPrix();
+            ng.session = session;
+            ng.idProduit = sa.getIdProduit();
+            ng.prixDemande = this.achatFournisseur.getPrixANegocier();
+            ng.quantiteDemande = sa.getQteSouhaitee();
+            this.envoyerMessage(ng);
         }
     }
 
@@ -137,11 +161,11 @@ public class FournisseurBehavior extends CyclicBehaviour {
 
             // envoit du message
             this.getAgent().send(msg);
-            
+
         } catch (IOException ex) {
             Logger.getLogger(ClientBehavior.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
 }
