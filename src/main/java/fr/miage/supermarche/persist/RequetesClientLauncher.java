@@ -15,7 +15,6 @@ public class RequetesClientLauncher {
         try {
             double prix = RequetesClient.getPrixWithRef("BOBI16");
             System.out.println(prix);
-
             double prix2 = RequetesClient.getPrixWithRef(1964520057);
             System.out.println(prix2);
         } catch (SQLException ex) {
