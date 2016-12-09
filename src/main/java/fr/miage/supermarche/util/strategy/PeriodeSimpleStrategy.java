@@ -3,7 +3,7 @@ package fr.miage.supermarche.util.strategy;
 import fr.miage.supermarche.util.Periode;
 
 /**
- *
+ * Définit une stratégie simple de définition des périodes
  * @author Antoine NOSAL
  * @author Maxime BLAISE
  * @author Guillaume DÉNISSE

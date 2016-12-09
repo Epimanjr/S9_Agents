@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Définit une stratégie simple de gestion du stock
  * Si le stock disponible est inférieur à la moitié de la quantité souhaitée
  * minimale souhaitée Alors on doit se réapprovisionner
  *
