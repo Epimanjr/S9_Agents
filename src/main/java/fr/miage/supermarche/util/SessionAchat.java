@@ -17,7 +17,29 @@ public class SessionAchat {
         this.qteSouhaitee = qteSouhaitee;
         this.etat = etat;
     }
-    
-    
-    
+
+    public Integer getIdProduit() {
+        return idProduit;
+    }
+
+    public void setIdProduit(Integer idProduit) {
+        this.idProduit = idProduit;
+    }
+
+    public Integer getQteSouhaitee() {
+        return qteSouhaitee;
+    }
+
+    public void setQteSouhaitee(Integer qteSouhaitee) {
+        this.qteSouhaitee = qteSouhaitee;
+    }
+
+    public TypeMessage getEtat() {
+        return etat;
+    }
+
+    public void setEtat(TypeMessage etat) {
+        this.etat = etat;
+    }
+
 }

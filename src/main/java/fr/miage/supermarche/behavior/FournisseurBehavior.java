@@ -2,6 +2,7 @@ package fr.miage.supermarche.behavior;
 
 import fr.miage.agents.api.message.Message;
 import fr.miage.agents.api.message.TypeMessage;
+import fr.miage.agents.api.message.negociation.FinaliserAchat;
 import fr.miage.agents.api.message.negociation.InitierAchat;
 import fr.miage.agents.api.message.negociation.ResultatInitiationAchat;
 import fr.miage.supermarche.util.AchatFournisseur;
@@ -91,6 +92,18 @@ public class FournisseurBehavior extends CyclicBehaviour {
                             ResultatInitiationAchat ria = (ResultatInitiationAchat) recu;
                             if (ria.success) {
                                 SessionAchat sa = this.sessionsActives.get(ria.session);
+                                this.achatFournisseur.setIdProduit(sa.getIdProduit());
+                                this.achatFournisseur.setPrix(ria.prixFixe);
+                                this.achatFournisseur.setQteSouhaitee(sa.getQteSouhaitee());
+                                this.achatFournisseur.setQteDisponibleChezFournisseur(ria.quantiteDisponible);
+                                if (this.achatFournisseur.approuver()) {
+                                    // Si l'achat est approuvé selon la startégie
+                                    FinaliserAchat fa = new FinaliserAchat();
+                                    fa.session = ria.session;
+                                    this.envoyerMessage(fa);
+                                } else {
+                                    // Si on est pas d'accord, on doit négocier
+                                }
                             }
                             break;
                         default:

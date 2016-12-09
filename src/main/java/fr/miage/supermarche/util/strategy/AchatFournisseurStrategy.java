@@ -16,6 +16,6 @@ public interface AchatFournisseurStrategy {
      * @param p Période à traiter
      * @return 
      */
-    public void todo(AchatFournisseur af);
+    public boolean approuver(AchatFournisseur af);
     
 }
