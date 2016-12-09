@@ -6,12 +6,14 @@ import fr.miage.agents.api.message.recherche.ResultatRecherche;
 import fr.miage.agents.api.message.relationclientsupermarche.Achat;
 import fr.miage.agents.api.message.relationclientsupermarche.ResultatDistance;
 import fr.miage.agents.api.model.Produit;
+import fr.miage.supermarche.persist.RequetesClient;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -85,11 +87,19 @@ public class ClientBehavior extends CyclicBehaviour {
      * @param r le message reçu avec les informatios de Recherche
      */
     private void gererRecherche(Rechercher r) {
-        // Notre liste de produits
+        // Récupération de notre liste de produits en fonction des critères
+        List<Integer> ids = new ArrayList<>();
         List<Produit> produits = new ArrayList<Produit>();
-        //produits = RequetesClient.getPrixWithRef(r.idProduit);
+        try {
+            ids = RequetesClient.getIdWithCriteres("", r.nomCategorie, r.marque, ((int) r.prixMin), ((int) r.prixMax));
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientBehavior.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-        // on met notre liste dans un message de l'api
+        // TODO récupérer des produits avec un id long plutôt qu'une référence
+        // ids.forEach(it -> produits.add(Produit.getByReference(it)));
+        
+// on met notre liste dans un message de l'api
         ResultatRecherche rr = new ResultatRecherche();
         rr.produitList = produits;
         rr.Session = r.session;
