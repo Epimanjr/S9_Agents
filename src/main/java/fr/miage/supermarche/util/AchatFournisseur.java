@@ -15,6 +15,7 @@ public class AchatFournisseur {
     private float prix;
     private Integer qteSouhaitee;
     private Integer qteDisponibleChezFournisseur;
+    private float prixANegocier;
     
     /**
      * Stratégie
@@ -66,6 +67,14 @@ public class AchatFournisseur {
 
     public void setQteDisponibleChezFournisseur(Integer qteDisponibleChezFournisseur) {
         this.qteDisponibleChezFournisseur = qteDisponibleChezFournisseur;
+    }
+
+    public float getPrixANegocier() {
+        return prixANegocier;
+    }
+
+    public void setPrixANegocier(float prixANegocier) {
+        this.prixANegocier = prixANegocier;
     }
     
 }

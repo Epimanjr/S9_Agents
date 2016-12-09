@@ -4,6 +4,7 @@ import fr.miage.agents.api.message.Message;
 import fr.miage.agents.api.message.TypeMessage;
 import fr.miage.agents.api.message.negociation.FinaliserAchat;
 import fr.miage.agents.api.message.negociation.InitierAchat;
+import fr.miage.agents.api.message.negociation.NegocierPrix;
 import fr.miage.agents.api.message.negociation.ResultatInitiationAchat;
 import fr.miage.supermarche.util.AchatFournisseur;
 import fr.miage.supermarche.util.MessageInterne;
@@ -103,6 +104,12 @@ public class FournisseurBehavior extends CyclicBehaviour {
                                     this.envoyerMessage(fa);
                                 } else {
                                     // Si on est pas d'accord, on doit négocier
+                                    NegocierPrix ng = new NegocierPrix();
+                                    ng.session = ria.session;
+                                    ng.idProduit = sa.getIdProduit();
+                                    ng.prixDemande = this.achatFournisseur.getPrixANegocier();
+                                    ng.quantiteDemande = sa.getQteSouhaitee();
+                                    this.envoyerMessage(ng);
                                 }
                             }
                             break;
