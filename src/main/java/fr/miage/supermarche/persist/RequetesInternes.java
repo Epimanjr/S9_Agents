@@ -23,29 +23,7 @@ public class RequetesInternes {
             Integer idProduit = itProduits.next();
             Integer qteProduit = mapProduits.get(idProduit);
 
-            String sql = "SELECT stock FROM produit WHERE id=" + idProduit;
-            ResultSet result;
-            try {
-                result = Connector.select(sql);
-                if (result.next()) {
-                    Integer stockProduit = result.getInt("stock");
-                    if (stockProduit >= qteProduit) {
-                        Integer newStock = stockProduit - qteProduit;
-                        String sqlUpdate = "UPDATE produit set stock=" + newStock + " WHERE id=" + idProduit;
-                        Connector.insert(sqlUpdate);
-                        mapResults.put(idProduit, true);
-                    } else {
-                        mapResults.put(idProduit, false);
-                    }
-                } else {
-                    // Normalement on est forcément obligé de trouver le produit... 
-                    mapResults.put(idProduit, false);
-                }
-            } catch (SQLException ex) {
-                System.err.println("Erreur: impossible de récupérer ou modifier le stock du produit " + idProduit);
-                ex.printStackTrace();
-            }
-
+            mapResults.put(idProduit, retirerProduit(idProduit, qteProduit));
         }
         return mapResults;
     }
@@ -66,26 +44,65 @@ public class RequetesInternes {
             Integer idProduit = itProduits.next();
             Integer qteProduit = mapProduits.get(idProduit);
 
-            try {
-                String sql = "SELECT stock FROM produit WHERE id=" + idProduit;
-                ResultSet result = Connector.select(sql);
-                if (result.next()) {
-                    Integer stockProduit = result.getInt("stock");
-                    Integer newStock = stockProduit + qteProduit;
-
-                    String sqlUpdate = "UPDATE produit set stock=" + newStock + " WHERE id=" + idProduit;
-                    Connector.insert(sqlUpdate);
-                    mapResults.put(idProduit, true);
-                } else {
-                    // Normalement on est forcément obligé de trouver le produit... 
-                    mapResults.put(idProduit, false);
-                }
-            } catch (SQLException ex) {
-                System.err.println("Erreur: impossible de récupérer ou modifier le stock du produit " + idProduit);
-                ex.printStackTrace();
-            }
-
+            // Traitement et ajout
+            mapResults.put(idProduit, ajouterProduit(idProduit, qteProduit));
         }
         return mapResults;
+    }
+
+    /**
+     * Permet de retirer un seul produit dans la base
+     *
+     * @param idProduit Identifiant du produit
+     * @param qteProduit Quantité à retirer
+     * @return Si bien retiré
+     */
+    public static boolean retirerProduit(Integer idProduit, Integer qteProduit) {
+        String sql = "SELECT stock FROM produit WHERE id=" + idProduit;
+        ResultSet result;
+        try {
+            result = Connector.select(sql);
+            if (result.next()) {
+                Integer stockProduit = result.getInt("stock");
+                if (stockProduit >= qteProduit) {
+                    Integer newStock = stockProduit - qteProduit;
+                    String sqlUpdate = "UPDATE produit set stock=" + newStock + " WHERE id=" + idProduit;
+                    Connector.insert(sqlUpdate);
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("Erreur: impossible de récupérer ou modifier le stock du produit " + idProduit);
+            ex.printStackTrace();
+        }
+
+        return false;
+    }
+
+    /**
+     * Permet d'ajouter un seul produit dans la base
+     *
+     * @param idProduit Identifiant du produit
+     * @param qteProduit Quantité à ajouter
+     * @return Si bien ajouté
+     */
+    public static boolean ajouterProduit(Integer idProduit, Integer qteProduit) {
+        try {
+            String sql = "SELECT stock FROM produit WHERE id=" + idProduit;
+            ResultSet result = Connector.select(sql);
+            if (result.next()) {
+                Integer stockProduit = result.getInt("stock");
+                Integer newStock = stockProduit + qteProduit;
+
+                String sqlUpdate = "UPDATE produit set stock=" + newStock + " WHERE id=" + idProduit;
+                Connector.insert(sqlUpdate);
+                return true;
+            }
+        } catch (SQLException ex) {
+            System.err.println("Erreur: impossible de récupérer ou modifier le stock du produit " + idProduit);
+            ex.printStackTrace();
+        }
+
+        return false;
     }
 }
