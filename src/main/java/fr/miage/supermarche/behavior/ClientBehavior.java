@@ -7,6 +7,7 @@ import fr.miage.agents.api.message.relationclientsupermarche.Achat;
 import fr.miage.agents.api.message.relationclientsupermarche.ResultatDistance;
 import fr.miage.supermarche.persist.Produit;
 import fr.miage.supermarche.persist.RequetesClient;
+import fr.miage.supermarche.util.ApiProduit;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -14,13 +15,9 @@ import jade.lang.acl.UnreadableException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -91,6 +88,30 @@ public class ClientBehavior extends CyclicBehaviour {
      * @param r le message reçu avec les informatios de Recherche
      */
     private void gererRecherche(Rechercher r) {
+        Long id = r.idProduit;
+        if(id != null)
+            rechercheProduitParId(r.idProduit, r.session);
+        else
+            rechercheProduitParCriteres(r);
+    }
+
+
+    private void rechercheProduitParId(long id, UUID session){
+        Optional<Produit> maybe_p = Produit.getById(id);
+        List<ApiProduit> ps = new LinkedList<>();
+
+        if(maybe_p.isPresent()){
+            ApiProduit evilP = maybe_p.get().toApiProduit();
+            ps.add(evilP);
+        }
+
+        ResultatRecherche rr = new ResultatRecherche();
+        rr.produitList = ApiProduit.toRawApiProduitList(ps);
+        rr.Session = session;
+        this.envoyerMessage(rr);
+    }
+
+    private void rechercheProduitParCriteres(Rechercher r){
         // Récupération de notre liste de produits en fonction des critères
         List<Integer> ids = new ArrayList<>();
 
@@ -100,18 +121,16 @@ public class ClientBehavior extends CyclicBehaviour {
             Logger.getLogger(ClientBehavior.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        // TODO récupérer des produits avec un id long plutôt qu'une référence
-
         ArrayList<Produit> produits = new ArrayList<>();
-        ArrayList<Integer> notFound = new ArrayList<>();
+        ArrayList<Integer> notFound = new ArrayList<>();  // TODO, en faire quelquechose ?
 
         ids.stream().map(id -> {
-            // for each id, make an hmap of {"id" -> id,  "produit" -> ¿Produit? }
-            return new HashMap<String, Object>(){{
+                    // for each id, make an hmap of {"id" -> id,  "produit" -> ¿Produit? }
+                    return new HashMap<String, Object>(){{
                         put("id", id);
                         put("produit", Produit.getById((long) id));
                     }};
-        }
+                }
         ).forEach(hmap -> {
             // Get the Produit. Maybe there is no product, so it's Optional.
             Optional<Produit> produit = (Optional<Produit>) hmap.get("produit");
@@ -122,7 +141,7 @@ public class ClientBehavior extends CyclicBehaviour {
             else
                 notFound.add(id);
 
-            // Now we know which ones are found and which ones are not.
+            // Now we know which ones are found and which ones aren't.
 
         });
 
@@ -130,7 +149,7 @@ public class ClientBehavior extends CyclicBehaviour {
         ResultatRecherche rr = new ResultatRecherche();
         rr.produitList = produits.stream().map(Produit::toApiProduit).collect(Collectors.toList());
         rr.Session = r.session;
-        
+
         // on envoit le message
         this.envoyerMessage(rr);
     }
