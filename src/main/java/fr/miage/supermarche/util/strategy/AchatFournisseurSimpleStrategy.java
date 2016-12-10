@@ -20,17 +20,13 @@ import java.util.logging.Logger;
 public class AchatFournisseurSimpleStrategy implements AchatFournisseurStrategy {
 
     /**
-     * Pourcentage maximal du prix de vente
-     * auquel on est d'accord d'acheter le produit
-     * chez le fournisseur
-     * idCategorie -> seuil
-     * Par exemple :
-     * (6, 0.70) <=> On n'achète pas un produit de la
-     * catégorie 6 au dessus du 70% du prix de vente
-     * que l'on a défini
+     * Pourcentage maximal du prix de vente auquel on est d'accord d'acheter le
+     * produit chez le fournisseur idCategorie -> seuil Par exemple : (6, 0.70)
+     * <=> On n'achète pas un produit de la catégorie 6 au dessus du 70% du prix
+     * de vente que l'on a défini
      */
     private Map<Integer, Float> partFournisseurProduits;
-    
+
     /**
      * Initialise les parts fournisseurs pour chaque catégorie de produits
      */
@@ -43,11 +39,11 @@ public class AchatFournisseurSimpleStrategy implements AchatFournisseurStrategy 
         this.partFournisseurProduits.put(6, 0.80f);
     }
 
-    public AchatFournisseurSimpleStrategy(Map<Integer, Float> partFournisseurProduits) {
+    public AchatFournisseurSimpleStrategy() {
         this.partFournisseurProduits = new HashMap<>();
         this.initPartFournisseurProduits();
     }
-    
+
     /**
      * En fonction du produit (af.getIdProduit) et du prix (af.getPrix), de la
      * quantité souhaitée (..) et de la quantité disponible (..) chez le
@@ -65,15 +61,36 @@ public class AchatFournisseurSimpleStrategy implements AchatFournisseurStrategy 
             Float prixPropose = af.getPrixProposeParFournisseur();
             Integer qteSouhaitee = af.getQteSouhaitee();
             Integer qteDisponible = af.getQteDisponibleChezFournisseur();
-            
-            // TODO : approuver ou non la proposition d'achat
-            
-            // TODO : Il faut aussi ici déterminer le prochain
-            // prix que l'on va proposer pour négocier
-            af.setPrixANegocier(0);
+
+            // TODO : approuver ou non la proposition d'achat (commence à la ligne 70)
+            if (qteDisponible >= qteSouhaitee) {
+                // Si la quantité disponible est suffisante, on s'intéresse au prix proposé
+                
+                // Ligne à remplacer par la ligne suivante dès que méthode dispo
+                // Float seuil = this.partFournisseurProduits.get(produit.getIdCategorie());
+                Float seuil = this.partFournisseurProduits.get(1);
+                // Float prixVente = produit.getPrix();
+                Float prixVente = 0.0f;
+                Float prixMax = (seuil * prixVente);
+                
+                if (prixPropose <= prixMax) {
+                    // Si le prix ne dépasse pas notre seuil
+                    return true;
+                } else {
+                    // Si le prix est trop élevé, on propose un prix plus bas
+                    /**
+                     * Exemple :
+                     * Si : il propose 100 alors que notre prix max est de 80
+                     * Alors : on lui propose [80-(100-80)] soit 60
+                     */
+                    af.setPrixANegocier(prixMax - (prixPropose - prixMax));
+                    return false;
+                }
+            }
         } catch (SQLException ex) {
             Logger.getLogger(AchatFournisseurSimpleStrategy.class.getName()).log(Level.SEVERE, null, ex);
         }
+        af.setPrixANegocier(-1);
         return false;
     }
 
