@@ -79,12 +79,31 @@ public class ImportHelper {
     }
     
     public static void setRefToId() {
-        // TODO 
+        try {
+            ResultSet results = Connector.select("SELECT idProduit, nomCategorie, nomProduit FROM produit NATURAL JOIN categorie");
+            while(results.next()) {
+                int idProduit = results.getInt("idProduit");
+                String nomCategorie = results.getString("nomCategorie");
+                String nomProduit = results.getString("nomProduit");
+                
+                int alea = (int)(Math.random() * 1000);
+                String ref = nomCategorie.substring(0, 2).toUpperCase()
+                        + nomProduit.substring(0, 2).toUpperCase()
+                        + alea;
+                
+                String sql = "UPDATE produit SET refProduit='" + ref + "' WHERE idProduit="+idProduit;
+                Connector.insert(sql);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ImportHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     public static void main(String[] args) {
         /*ImportHelper ih = new ImportHelper();
         ih.run();*/
         // setIdToRef();
+        setRefToId();
     }
 }
