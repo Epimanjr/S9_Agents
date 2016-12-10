@@ -116,7 +116,7 @@ public class Produit {
     }
 
     public static Produit getByReference(String ref) throws SQLException {
-        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE reference = '" + ref + "'";
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE refProduit = '" + ref + "'";
         return fetchWithQuery(sql).get(0);
     }
 

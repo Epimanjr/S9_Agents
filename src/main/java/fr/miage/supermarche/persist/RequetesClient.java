@@ -119,14 +119,14 @@ public class RequetesClient {
      * @throws SQLException Si erreur de connexion à la base.
      * @throws ProduitNotFoundException Si produit non trouvé.
      */
-    public static double getPrixWithRef(String ref) throws SQLException, ProduitNotFoundException {
-        double prix = 0.0;
+    public static float getPrixWithRef(String ref) throws SQLException, ProduitNotFoundException {
+        float prix = 0.0f;
 
         // Query
-        ResultSet result = Connector.select("SELECT prix FROM produit WHERE reference='" + ref + "'");
+        ResultSet result = Connector.select("SELECT prix FROM produit WHERE refProduit='" + ref + "'");
         if (result.next()) {
             // Récupération du prix
-            prix = result.getDouble("prix");
+            prix = result.getFloat("prix");
         } else {
             throw new ProduitNotFoundException();
         }
@@ -142,14 +142,14 @@ public class RequetesClient {
      * @throws SQLException Si erreur de connexion à la base.
      * @throws ProduitNotFoundException Si produit non trouvé.
      */
-    public static double getPrixWithRef(Integer id) throws SQLException, ProduitNotFoundException {
-        double prix = 0.0;
+    public static float getPrixWithRef(Integer id) throws SQLException, ProduitNotFoundException {
+        float prix = 0.0f;
 
         // Query
         ResultSet result = Connector.select("SELECT prix FROM produit WHERE id='" + id + "'");
         if (result.next()) {
             // Récupération du prix
-            prix = result.getDouble("prix");
+            prix = result.getFloat("prix");
         } else {
             throw new ProduitNotFoundException();
         }
