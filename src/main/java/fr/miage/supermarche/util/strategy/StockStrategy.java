@@ -19,6 +19,4 @@ public interface StockStrategy {
      */
     public void analyse(Stock s);
     
-    public void lancerReapprov(Stock s);
-    
 }

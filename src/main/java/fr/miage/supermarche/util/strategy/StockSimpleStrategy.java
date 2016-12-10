@@ -23,6 +23,7 @@ public class StockSimpleStrategy implements StockStrategy {
 
     /**
      * Quantités minimum en stock pour chaque produit
+     * référenceProduit -> qte minimum
      */
     private Map<String, Integer> qteMinProduits;
 
@@ -52,21 +53,12 @@ public class StockSimpleStrategy implements StockStrategy {
                 // On utilise la stratégie (définie en début de classe)
                 if (produit.getStock() < qteMinProduit.getValue() / 2) {
                     qteManquante = qteMinProduit.getValue() - produit.getStock();
-                    //TODO : Référence produit doit être un INTEGER
-                    //s.aCommander.put(produit.getReference(), qteManquante);
+                    s.aCommander.put(produit.getId(), qteManquante);
                 }
             }
         } catch (SQLException ex) {
             Logger.getLogger(SpermarcheBehavior.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    @Override
-    public void lancerReapprov(Stock s) {
-        /*for (Map.Entry<Integer, Integer> aCommander : s.getaCommander().entrySet()) {
-            
-        }*/
-        
     }
 
 }
