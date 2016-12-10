@@ -17,7 +17,6 @@ public class Produit {
     private static final String TABLE_NAME = "produit";
     private static final String[] FIELDS = {"nomProduit", "marqueProduit", "descriptionProduit", "prixProduit", "prix", "prixAchat", "stock", "idCategorie"};
 
-
     /**
      * Référence numérique ( ¿clé primaire? )
      */
@@ -27,7 +26,7 @@ public class Produit {
      * Nom du produit.
      */
     private String nomProduit;
-    
+
     /**
      * Référence produit (généré).
      */
@@ -47,19 +46,19 @@ public class Produit {
      * Categorie du produit.
      */
     private String categorie;
-    
+
     private int idCategorie;
 
     /**
      * Prix du produit (de vente, supermarché).
      */
     private float prix = -1f;
-    
+
     /**
      * Prix du produit (producteur).
      */
     private float prixProduit;
-    
+
     /**
      * Prix du produit (fournisseur).
      */
@@ -73,11 +72,11 @@ public class Produit {
     public Produit() {
     }
 
-    private  Produit(ResultSet rs) throws SQLException {
+    private Produit(ResultSet rs) throws SQLException {
         idProduit = rs.getInt("idProduit");
         refProduit = rs.getString("refProduit");
         nomProduit = rs.getString("nomProduit");
-        marqueProduit = rs.getString("marqueProduit"); 
+        marqueProduit = rs.getString("marqueProduit");
         descriptionProduit = rs.getString("descriptionProduit");
         prix = rs.getFloat("prix");
         prixProduit = rs.getFloat("prixProduit");
@@ -95,8 +94,7 @@ public class Produit {
         this.stock = stock;
     }
 
-
-    private static ArrayList<Produit> fetchWithQuery(String query) throws SQLException{
+    private static ArrayList<Produit> fetchWithQuery(String query) throws SQLException {
         ResultSet results = Connector.select(query);
         ArrayList<Produit> produits = new ArrayList<>();
         while (results.next()) {
@@ -108,10 +106,10 @@ public class Produit {
     }
 
     public static Optional<Produit> getById(Long id) {
-        final String q = "SELECT * FROM " + TABLE_NAME + "WHERE id = " + id  + ";";
+        final String q = "SELECT * FROM " + TABLE_NAME + "WHERE id = " + id + ";";
         try {
             Produit p = fetchWithQuery(q).get(0);
-            return  Optional.of(p);
+            return Optional.of(p);
         } catch (SQLException | ArrayIndexOutOfBoundsException e) {
             return Optional.empty();
         }
@@ -121,12 +119,12 @@ public class Produit {
         String sql = "SELECT * FROM " + TABLE_NAME + " WHERE reference = '" + ref + "'";
         return fetchWithQuery(sql).get(0);
     }
-    
+
     public static ArrayList<Produit> getAllProduit() throws SQLException {
         String sql = "SELECT * FROM " + TABLE_NAME;
         return fetchWithQuery(sql);
     }
-    
+
     public static ArrayList<Produit> getAllProduitByCriteres(String criteres) throws SQLException {
         // TODO Parser
         String sql = "SELECT * FROM " + TABLE_NAME;
@@ -148,6 +146,26 @@ public class Produit {
                 + ", " + this.stock
                 + ", " + this.idCategorie
                 + ")";
+
+        Connector.insert(sql);
+    }
+
+    /**
+     * Mise à jour du produit dans la base.
+     *
+     * @throws SQLException .
+     */
+    public void update() throws SQLException {
+        String sql = "UPDATE produit "
+                + "SET nomProduit='" + this.nomProduit + "'"
+                + "SET marqueProduit='" + this.marqueProduit + "'"
+                + "SET descriptionProduit='" + this.descriptionProduit + "'"
+                + "SET prixProduit=" + this.prixProduit
+                + "SET prixAchat=" + this.prixAchat
+                + "SET prix=" + this.prix
+                + "SET stock=" + this.stock
+                + "SET idCategorie=" + this.idCategorie
+                + " WHERE idProduit=" + this.idProduit;
 
         Connector.insert(sql);
     }
@@ -239,8 +257,6 @@ public class Produit {
     public void setRefProduit(String refProduit) {
         this.refProduit = refProduit;
     }
-    
-    
 
     @Override
     public int hashCode() {
@@ -308,7 +324,7 @@ public class Produit {
         return "Produit{" + "idProduit=" + idProduit + ", nomProduit=" + nomProduit + ", descriptionProduit=" + descriptionProduit + ", marqueProduit=" + marqueProduit + ", categorie=" + categorie + ", idCategorie=" + idCategorie + ", prix=" + prix + ", prixProduit=" + prixProduit + ", prixAchat=" + prixAchat + ", stock=" + stock + '}';
     }
 
-    public ApiProduit toApiProduit(){
+    public ApiProduit toApiProduit() {
         ApiProduit evilProd = new ApiProduit();
         evilProd.idProduit = this.idProduit;
         //public Categorie idCategorie; TODO
@@ -319,5 +335,4 @@ public class Produit {
         return evilProd;
     }
 
-    
 }
