@@ -58,7 +58,7 @@ public class StockSimpleStrategy implements StockStrategy {
                 Produit produit = Produit.getByReference(qteMinProduit.getKey());
                 // On utilise la stratégie (définie en début de classe)
                 if (produit.getStock() < (qteMinProduit.getValue() * this.seuil)) {
-                    qteManquante = qteMinProduit.getValue() - produit.getStock();
+                    qteManquante = (int) ((qteMinProduit.getValue()*1.20) - produit.getStock());
                     s.aCommander.put(produit.getId(), qteManquante);
                 }
             }
