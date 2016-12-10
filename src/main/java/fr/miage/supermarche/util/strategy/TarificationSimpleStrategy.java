@@ -3,7 +3,9 @@ package fr.miage.supermarche.util.strategy;
 import fr.miage.supermarche.util.Tarification;
 
 /**
- *
+ * Définit une stratégie simple de tarification
+ * Basiquement, on pourrait définir un prix de vente HT par produit
+ * 
  * @author Antoine NOSAL
  * @author Maxime BLAISE
  * @author Guillaume DÉNISSE

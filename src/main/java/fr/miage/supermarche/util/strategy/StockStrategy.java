@@ -3,7 +3,7 @@ package fr.miage.supermarche.util.strategy;
 import fr.miage.supermarche.util.Stock;
 
 /**
- *
+ * Définit une stratégie de gestion du stock
  * @author Antoine NOSAL
  * @author Maxime BLAISE
  * @author Guillaume DÉNISSE

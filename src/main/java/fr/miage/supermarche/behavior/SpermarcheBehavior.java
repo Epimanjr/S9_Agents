@@ -73,8 +73,8 @@ public class SpermarcheBehavior extends TickerBehaviour {
         if(!this.stock.getaCommander().isEmpty()) {
             MessageInterne message = new MessageInterne(MessageInterneType.demandeReapprov);
             message.aCommander = this.stock.getaCommander();
-            // TODO : Envoyer le message au fournisseur
-            // Je ne pense pas que la méthode envoyerMessage fait le job
+            // TODO : Envoyer le message à FournisseurBehavior
+            // Je ne pense pas que la méthode envoyerMessage fait le job...
             this.envoyerMessage(this);
         }
 

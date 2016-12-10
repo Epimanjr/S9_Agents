@@ -3,7 +3,7 @@ package fr.miage.supermarche.util;
 import fr.miage.supermarche.util.strategy.AchatFournisseurStrategy;
 
 /**
- * 
+ * Représente un achat fournisseur
  * @author Antoine NOSAL
  * @author Maxime BLAISE
  * @author Guillaume DÉNISSE
@@ -12,7 +12,7 @@ import fr.miage.supermarche.util.strategy.AchatFournisseurStrategy;
 public class AchatFournisseur {
 
     private Integer idProduit;
-    private float prix;
+    private float prixProposeParFournisseur;
     private Integer qteSouhaitee;
     private Integer qteDisponibleChezFournisseur;
     private float prixANegocier;
@@ -45,12 +45,12 @@ public class AchatFournisseur {
         this.idProduit = idProduit;
     }
 
-    public float getPrix() {
-        return prix;
+    public float getPrixProposeParFournisseur() {
+        return prixProposeParFournisseur;
     }
 
-    public void setPrix(float prix) {
-        this.prix = prix;
+    public void setPrixProposeParFournisseur(float prixProposeParFournisseur) {
+        this.prixProposeParFournisseur = prixProposeParFournisseur;
     }
 
     public Integer getQteSouhaitee() {
