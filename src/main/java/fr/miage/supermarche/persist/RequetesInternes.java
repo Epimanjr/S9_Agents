@@ -2,11 +2,31 @@ package fr.miage.supermarche.persist;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 
 public class RequetesInternes {
-
+    
+    public static int nbJoursSoldesFlottantesRestants() {
+        int nbJoursRestantes = 10;
+        int annee = new GregorianCalendar().get(GregorianCalendar.YEAR);
+        
+        String sql = "SELECT nbJours FROM solde WHERE annee="+annee;
+        try {
+            ResultSet results = Connector.select(sql);
+            while(results.next()) {
+                int nbJours = results.getInt("nbJours");
+                nbJoursRestantes -= nbJours;
+            }
+        } catch (SQLException ex) {
+            //Logger.getLogger(RequetesInternes.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Erreur: impossible d'exécuter : " + sql);
+            return 0;
+        }
+        return (nbJoursRestantes > 0) ? nbJoursRestantes : 0;
+    }
+    
     /**
      * Permet de retirer des produits du stock de notre base. Par exemple après
      * un achat d'un client.
