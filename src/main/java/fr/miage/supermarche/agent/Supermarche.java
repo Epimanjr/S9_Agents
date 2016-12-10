@@ -3,13 +3,21 @@ package fr.miage.supermarche.agent;
 import fr.miage.supermarche.behavior.ClientBehavior;
 import fr.miage.supermarche.behavior.FournisseurBehavior;
 import fr.miage.supermarche.behavior.SpermarcheBehavior;
+import fr.miage.supermarche.util.AchatFournisseur;
+import fr.miage.supermarche.util.Periode;
+import fr.miage.supermarche.util.PeriodeType;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
-import jade.core.behaviours.CyclicBehaviour;
+import fr.miage.supermarche.util.Stock;
+import fr.miage.supermarche.util.Tarification;
+import fr.miage.supermarche.util.strategy.AchatFournisseurSimpleStrategy;
+import fr.miage.supermarche.util.strategy.PeriodeSimpleStrategy;
+import fr.miage.supermarche.util.strategy.StockSimpleStrategy;
+import fr.miage.supermarche.util.strategy.TarificationSimpleStrategy;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,7 +33,9 @@ public class Supermarche extends Agent {
     protected void setup() {
         System.out.println("Je suis une super supermarché dont le nom est : " + this.getLocalName());
 
-        //enregistre l'agent dans les pages jaunes
+        /**
+         * Enregistrement l'agent dans les pages jaunes
+         */
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
         ServiceDescription sd = new ServiceDescription();
@@ -38,7 +48,26 @@ public class Supermarche extends Agent {
             fe.printStackTrace();
         }
         
-        List<Behaviour> behaviors = Arrays.asList(new ClientBehavior(this), new FournisseurBehavior(this), new SpermarcheBehavior(this, 6000));
+        /**
+         * Définition des stratégies
+         */
+        Stock stock = new Stock();
+        stock.setStrategy(new StockSimpleStrategy(0.50));
+        Periode periode = new Periode(null, null, PeriodeType.STANDARD);
+        periode.setStrategy(new PeriodeSimpleStrategy());
+        Tarification tarification = new Tarification();
+        tarification.setStrategy(new TarificationSimpleStrategy());
+        AchatFournisseur af = new AchatFournisseur();
+        af.setStrategy(new AchatFournisseurSimpleStrategy());
+        
+        /**
+         * Instanciation des behaviors
+         */
+        ClientBehavior client = new ClientBehavior(this);
+        FournisseurBehavior fournisseur = new FournisseurBehavior(this, af);
+        SpermarcheBehavior supermarche = new SpermarcheBehavior(this, 6000, stock, periode, tarification);
+        
+        List<Behaviour> behaviors = Arrays.asList(client, fournisseur, supermarche);
         
         behaviors.forEach(it -> addBehaviour(it));
     }

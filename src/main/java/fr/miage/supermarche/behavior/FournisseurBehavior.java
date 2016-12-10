@@ -48,6 +48,7 @@ public class FournisseurBehavior extends CyclicBehaviour {
 
     /**
      * Construit un comportement fournisseur depuis un agent
+     * (stratégie simple prédéfinie)
      *
      * @param a Agent initial qui adoptera ce comportement
      */
@@ -55,6 +56,17 @@ public class FournisseurBehavior extends CyclicBehaviour {
         super(a);
         this.achatFournisseur = new AchatFournisseur();
         this.achatFournisseur.setStrategy(new AchatFournisseurSimpleStrategy());
+    }
+    
+    /**
+     * Construit un comportement fournisseur depuis un agent
+     *
+     * @param a     Agent initial qui adoptera ce comportement
+     * @param af    Gestion des achats fournisseur
+     */
+    public FournisseurBehavior(Agent a, AchatFournisseur af) {
+        super(a);
+        this.achatFournisseur = af;
     }
 
     @Override

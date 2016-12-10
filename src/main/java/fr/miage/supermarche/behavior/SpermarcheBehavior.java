@@ -42,8 +42,9 @@ public class SpermarcheBehavior extends TickerBehaviour {
     private Tarification tarification;
     
     /**
-     * Instance une SupermarcheBehavior qui
+     * Instancie une SupermarcheBehavior qui
      * s'occupe de toute la gestion interne
+     * (stratégie simple prédéfinie)
      *
      * @param a         Agent implémentant ce comportement
      * @param period    Le comportement est répété selon cette période
@@ -61,6 +62,23 @@ public class SpermarcheBehavior extends TickerBehaviour {
         this.tarification.setStrategy(new TarificationSimpleStrategy());
     }
 
+    /**
+     * Instancie une SupermarcheBehavior qui
+     * s'occupe de toute la gestion interne
+     * 
+     * @param a             Agent implémentant ce comportement
+     * @param period        Le comportement est répété selon cette période
+     * @param stock         Gestion des stocks
+     * @param periode       Gestion de la période courante
+     * @param tarification  Gestion de la tarification
+     */
+    public SpermarcheBehavior(Agent a, long period, Stock stock, Periode periode, Tarification tarification) {
+        super(a, period);
+        this.stock = stock;
+        this.periodeActuelle = periode;
+        this.tarification = tarification;
+    }
+    
     /**
      * Gère le supermarché (Méthode appelée en boucle à chaque période)
      */
