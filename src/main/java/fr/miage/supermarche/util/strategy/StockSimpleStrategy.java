@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 public class StockSimpleStrategy implements StockStrategy {
 
     /**
-     * Quantités minimum pour chaque produit
+     * Quantités minimum en stock pour chaque produit
      */
     private Map<String, Integer> qteMinProduits;
 
@@ -32,7 +32,7 @@ public class StockSimpleStrategy implements StockStrategy {
     }
     
     /**
-     * Définit une quantité minimum souhaitée pour chaque produit
+     * Définit une quantité minimum souhaitée en stock pour chaque produit
      */
     public void initQteMinProduits() {
         this.qteMinProduits.put("BOBI16", 250);
