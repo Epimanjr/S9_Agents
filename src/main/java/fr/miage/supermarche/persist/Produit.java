@@ -159,7 +159,7 @@ public class Produit {
         String sql = "UPDATE produit "
                 + "SET nomProduit='" + this.nomProduit + "'"
                 + ", marqueProduit='" + this.marqueProduit + "'"
-                + ", descriptionProduit='" + this.descriptionProduit + "'"
+                + ", descriptionProduit='" + this.descriptionProduit.replaceAll("'", "") + "'"
                 + ", prixProduit=" + this.prixProduit
                 + ", prixAchat=" + this.prixAchat
                 + ", prix=" + this.prix
