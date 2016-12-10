@@ -52,7 +52,7 @@ public class SpermarcheBehavior extends TickerBehaviour {
         super(a, period);
         // Création d'un stock et sélection de la stratégie
         this.stock = new Stock();
-        this.stock.setStrategy(new StockSimpleStrategy());
+        this.stock.setStrategy(new StockSimpleStrategy(0.50));
         // Création d'une période et sélection de la stratégie de calcul
         this.periodeActuelle = new Periode(null, null, PeriodeType.STANDARD);
         this.periodeActuelle.setStrategy(new PeriodeSimpleStrategy());

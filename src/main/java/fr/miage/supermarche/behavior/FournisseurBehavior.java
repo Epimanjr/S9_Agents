@@ -152,13 +152,22 @@ public class FournisseurBehavior extends CyclicBehaviour {
             fa.session = session;
             this.envoyerMessage(fa);
         } else {
-            // Si on est pas d'accord, on doit négocier
-            NegocierPrix ng = new NegocierPrix();
-            ng.session = session;
-            ng.idProduit = sa.getIdProduit();
-            ng.prixDemande = this.achatFournisseur.getPrixANegocier();
-            ng.quantiteDemande = sa.getQteSouhaitee();
-            this.envoyerMessage(ng);
+            // Si on est pas d'accord
+            if (this.achatFournisseur.getPrixANegocier() == (-1)) {
+                // Si le fournisseur n'avait pas la quantité suffisante
+                AnnulerAchat aa = new AnnulerAchat();
+                aa.session = session;
+                this.envoyerMessage(aa);
+            } else {
+                // Si le fournisseur a la bonne quantité mais est trop cher,
+                // on tente une nouvelle négociation
+                NegocierPrix ng = new NegocierPrix();
+                ng.session = session;
+                ng.idProduit = sa.getIdProduit();
+                ng.prixDemande = this.achatFournisseur.getPrixANegocier();
+                ng.quantiteDemande = sa.getQteSouhaitee();
+                this.envoyerMessage(ng);
+            }
         }
     }
 

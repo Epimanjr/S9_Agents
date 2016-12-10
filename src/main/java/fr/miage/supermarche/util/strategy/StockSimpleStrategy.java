@@ -11,8 +11,8 @@ import java.util.logging.Logger;
 
 /**
  * Définit une stratégie simple de gestion du stock
- * Si le stock disponible est inférieur à la moitié de la quantité souhaitée
- * minimale souhaitée Alors on doit se réapprovisionner
+ * Si le stock disponible est inférieur à (seuil * qteMin souhaitée)
+ * Alors on doit se réapprovisionner
  *
  * @author Antoine NOSAL
  * @author Maxime BLAISE
@@ -23,12 +23,19 @@ public class StockSimpleStrategy implements StockStrategy {
 
     /**
      * Quantités minimum en stock pour chaque produit
+     * référenceProduit -> qte minimum
      */
     private Map<String, Integer> qteMinProduits;
 
-    public StockSimpleStrategy() {
+    /**
+     * Seuil de tolérance avant réapprovisionnement
+     */
+    private Double seuil;
+    
+    public StockSimpleStrategy(Double seuil) {
         this.qteMinProduits = new HashMap<>();
         this.initQteMinProduits();
+        this.seuil = seuil;
     }
     
     /**
@@ -50,23 +57,14 @@ public class StockSimpleStrategy implements StockStrategy {
             for (Map.Entry<String, Integer> qteMinProduit : this.qteMinProduits.entrySet()) {
                 Produit produit = Produit.getByReference(qteMinProduit.getKey());
                 // On utilise la stratégie (définie en début de classe)
-                if (produit.getStock() < qteMinProduit.getValue() / 2) {
+                if (produit.getStock() < (qteMinProduit.getValue() * this.seuil)) {
                     qteManquante = qteMinProduit.getValue() - produit.getStock();
-                    //TODO : Référence produit doit être un INTEGER
-                    //s.aCommander.put(produit.getReference(), qteManquante);
+                    s.aCommander.put(produit.getId(), qteManquante);
                 }
             }
         } catch (SQLException ex) {
             Logger.getLogger(SpermarcheBehavior.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    @Override
-    public void lancerReapprov(Stock s) {
-        /*for (Map.Entry<Integer, Integer> aCommander : s.getaCommander().entrySet()) {
-            
-        }*/
-        
     }
 
 }
