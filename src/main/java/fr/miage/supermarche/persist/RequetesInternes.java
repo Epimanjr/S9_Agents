@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class RequetesInternes {
-    
+
     public static int nbJoursSoldesFlottantesRestants() {
         int nbJoursRestantes = 10;
         int annee = new GregorianCalendar().get(GregorianCalendar.YEAR);
