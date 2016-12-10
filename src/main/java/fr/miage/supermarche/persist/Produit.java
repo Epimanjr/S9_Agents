@@ -158,13 +158,13 @@ public class Produit {
     public void update() throws SQLException {
         String sql = "UPDATE produit "
                 + "SET nomProduit='" + this.nomProduit + "'"
-                + " AND marqueProduit='" + this.marqueProduit + "'"
-                + " AND descriptionProduit='" + this.descriptionProduit + "'"
-                + " AND prixProduit=" + this.prixProduit
-                + " AND prixAchat=" + this.prixAchat
-                + " AND prix=" + this.prix
-                + " AND stock=" + this.stock
-                + " AND idCategorie=" + this.idCategorie
+                + ", marqueProduit='" + this.marqueProduit + "'"
+                + ", descriptionProduit='" + this.descriptionProduit + "'"
+                + ", prixProduit=" + this.prixProduit
+                + ", prixAchat=" + this.prixAchat
+                + ", prix=" + this.prix
+                + ", stock=" + this.stock
+                + ", idCategorie=" + this.idCategorie
                 + " WHERE idProduit=" + this.idProduit;
 
         Connector.insert(sql);
