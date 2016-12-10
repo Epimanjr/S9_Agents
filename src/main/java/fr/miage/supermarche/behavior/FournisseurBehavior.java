@@ -15,6 +15,7 @@ import fr.miage.supermarche.util.AchatFournisseur;
 import fr.miage.supermarche.util.MessageInterne;
 import fr.miage.supermarche.util.SessionAchat;
 import fr.miage.supermarche.util.strategy.AchatFournisseurSimpleStrategy;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -203,13 +204,14 @@ public class FournisseurBehavior extends CyclicBehaviour {
         try {
             // création du message pour JADE
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            msg.addReceiver(new AID("fournisseurtest", AID.ISLOCALNAME));
             msg.setContentObject(s);
 
             // envoit du message
             this.getAgent().send(msg);
 
         } catch (IOException ex) {
-            Logger.getLogger(ClientBehavior.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FournisseurBehavior.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

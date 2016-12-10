@@ -17,6 +17,7 @@ import fr.miage.supermarche.util.Tarification;
 import fr.miage.supermarche.util.strategy.AchatFournisseurSimpleStrategy;
 import fr.miage.supermarche.util.strategy.PeriodeSimpleStrategy;
 import fr.miage.supermarche.util.strategy.StockSimpleStrategy;
+import fr.miage.supermarche.util.strategy.TarificationALaDemandeStrategy;
 import fr.miage.supermarche.util.strategy.TarificationSimpleStrategy;
 import java.util.Arrays;
 import java.util.List;
@@ -56,7 +57,7 @@ public class Supermarche extends Agent {
         Periode periode = new Periode(null, null, PeriodeType.STANDARD);
         periode.setStrategy(new PeriodeSimpleStrategy());
         Tarification tarification = new Tarification();
-        tarification.setStrategy(new TarificationSimpleStrategy());
+        tarification.setStrategy(new TarificationALaDemandeStrategy());
         AchatFournisseur af = new AchatFournisseur();
         af.setStrategy(new AchatFournisseurSimpleStrategy());
         

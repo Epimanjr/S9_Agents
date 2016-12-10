@@ -149,7 +149,7 @@ public class SpermarcheBehavior extends TickerBehaviour {
             this.getAgent().send(msg);
             
         } catch (IOException ex) {
-            Logger.getLogger(ClientBehavior.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SpermarcheBehavior.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
