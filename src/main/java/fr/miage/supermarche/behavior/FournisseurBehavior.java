@@ -82,6 +82,7 @@ public class FournisseurBehavior extends CyclicBehaviour {
                     MessageInterne recu = (MessageInterne) aclMsg.getContentObject();
                     switch (recu.type) {
                         case demandeReapprov:
+                            System.out.println("demandeReapprov");
                             // ETAPE 0 : On reçoit une demande de réapprovisionnement
                             // Pour tous les éléments de la liste aCommander
                             for (Map.Entry<Integer, Integer> aCommander : recu.aCommander.entrySet()) {

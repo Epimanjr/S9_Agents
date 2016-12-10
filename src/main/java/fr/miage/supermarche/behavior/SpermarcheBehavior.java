@@ -84,6 +84,7 @@ public class SpermarcheBehavior extends TickerBehaviour {
      */
     @Override
     protected void onTick() {
+        System.out.println("onTick");
         // Gestion des stocks
         this.stock.analyse();
         // Envoyer la map this.stock.aCommander à la gestion des fournisseurs si elle n'est pas vide

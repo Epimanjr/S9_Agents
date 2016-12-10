@@ -47,11 +47,11 @@ public class StockSimpleStrategy implements StockStrategy {
      * Définit une quantité minimum souhaitée en stock pour chaque produit
      */
     public void initQteMinProduits() {
-        this.qteMinProduits.put("BOBI16", 250);
-        this.qteMinProduits.put("BOEA901", 100);
-        this.qteMinProduits.put("BOMI952", 150);
-        this.qteMinProduits.put("BOSN991", 50);
-        this.qteMinProduits.put("BOWH188", 450);
+        this.qteMinProduits.put("BOWH209", 250);
+        this.qteMinProduits.put("BOEA682", 100);
+        this.qteMinProduits.put("BOMI927", 150);
+        this.qteMinProduits.put("BOSN508", 50);
+        this.qteMinProduits.put("BOVI359", 450);
     }
     
     @Override
