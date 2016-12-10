@@ -69,17 +69,16 @@ public class TarificationSimpleStrategy implements TarificationStrategy {
     }
     
     @Override
-    public void update(Tarification p) {
+    public void update(Tarification p, List<Produit> produits) {
         Float prixAchat;
         Float prixProducteur;
         Float prixVente;
         Integer idCategorie;
         try {
             System.out.println("[INTERNE] Tarification en cours ...");
-            List<Produit> produits = Produit.getAllProduit();
+            //List<Produit> produits = Produit.getAllProduit();
             for(Produit produit : produits) {
                 idCategorie = produit.getIdCategorie();
-                
                 prixAchat = produit.getPrixAchat();
                 
                 if(prixAchat != (-1.0f)) {

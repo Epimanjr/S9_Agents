@@ -1,6 +1,8 @@
 package fr.miage.supermarche.util;
 
+import fr.miage.supermarche.persist.Produit;
 import fr.miage.supermarche.util.strategy.TarificationStrategy;
+import java.util.List;
 
 /**
  * Classe de gestion des stocks
@@ -17,6 +19,11 @@ public class Tarification{
      */
     private TarificationStrategy strategy;
     
+    /**
+     * Période en cours
+     */
+    private PeriodeType periodeType;
+    
     public Tarification() {
     }
 
@@ -24,8 +31,8 @@ public class Tarification{
      * Met à jour les tarifs
      * @return 
      */
-    public void update() {
-        this.strategy.update(this);
+    public void update(List<Produit> produits) {
+        this.strategy.update(this, produits);
     }
 
     public TarificationStrategy getStrategy() {
@@ -34,6 +41,14 @@ public class Tarification{
 
     public void setStrategy(TarificationStrategy strategy) {
         this.strategy = strategy;
+    }
+
+    public PeriodeType getPeriodeType() {
+        return periodeType;
+    }
+
+    public void setPeriodeType(PeriodeType periodeType) {
+        this.periodeType = periodeType;
     }
 
 }

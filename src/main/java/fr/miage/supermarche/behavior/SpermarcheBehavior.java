@@ -1,5 +1,6 @@
 package fr.miage.supermarche.behavior;
 
+import fr.miage.supermarche.persist.Produit;
 import fr.miage.supermarche.util.MessageInterne;
 import fr.miage.supermarche.util.MessageInterneType;
 import fr.miage.supermarche.util.PeriodeType;
@@ -15,6 +16,9 @@ import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -120,7 +124,13 @@ public class SpermarcheBehavior extends TickerBehaviour {
         }    
         
         // Gestion des PVHT (Prix de Vente Hors Taxes)
-        this.tarification.update();
+        List<Produit> produits = new ArrayList<Produit>();
+        try {
+            produits = Produit.getAllProduit();
+        } catch (SQLException ex) {
+            Logger.getLogger(SpermarcheBehavior.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.tarification.update(produits);
         System.out.println("[INTERNE] Système de gestion OFF\n");
     }
     

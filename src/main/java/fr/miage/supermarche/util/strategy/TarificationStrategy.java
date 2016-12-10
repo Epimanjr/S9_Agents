@@ -1,6 +1,8 @@
 package fr.miage.supermarche.util.strategy;
 
+import fr.miage.supermarche.persist.Produit;
 import fr.miage.supermarche.util.Tarification;
+import java.util.List;
 
 /**
  * Définit une stratégie de tarification
@@ -17,6 +19,6 @@ public interface TarificationStrategy {
      * @param p Période à traiter
      * @return 
      */
-    public void update(Tarification p);
+    public void update(Tarification p, List<Produit> produits);
     
 }
