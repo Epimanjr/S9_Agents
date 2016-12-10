@@ -1,10 +1,15 @@
 package fr.miage.supermarche.util.strategy;
 
 import fr.miage.supermarche.persist.RequetesInternes;
+import fr.miage.supermarche.persist.Soldes;
 import fr.miage.supermarche.util.Periode;
 import fr.miage.supermarche.util.PeriodeType;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Définit une stratégie simple de définition des périodes
@@ -59,8 +64,8 @@ public class PeriodeSimpleStrategy implements PeriodeStrategy {
                         Periode.dateDebutSoldesFlottantes = dateDebut;
                         Periode.nbJoursSoldesFlottantes = nbJours;
                         p.setPrevenirSoldesFlottantes(true);
-                    } 
-                } 
+                    }
+                }
             }
         } else {
             // Si vérifie si on atteint pas le début de la période de soldes flottantes
@@ -71,10 +76,28 @@ public class PeriodeSimpleStrategy implements PeriodeStrategy {
                 nouvellePeriode = new Periode(dateCourante, dateFin, PeriodeType.SOLDES_FLOTTANTES);
                 nouvellePeriode.setStrategy(p.getStrategy());
                 Periode.dateDebutSoldesFlottantes = null;
-                // TODO insert solde
-            } 
+                
+                SimpleDateFormat sdf = new SimpleDateFormat("dd--MM-YYYY");
+                String sDateDebut = sdf.format(dateCourante.getTime());
+                String sDateFin = sdf.format(dateFin.getTime());
+                Soldes solde = new Soldes(sDateDebut, sDateFin, dateCourante.get(GregorianCalendar.YEAR), Periode.nbJoursSoldesFlottantes);
+                try {
+                    solde.insert();
+                } catch (SQLException ex) {
+                    System.err.println("Impossible d'insérer une instance de solde dans la base");
+                }
+            }
         }
 
+        // Tests des deux cas standards|periodesNoel
+        if (p.getType() != PeriodeType.SOLDES_FLOTTANTES) {
+            GregorianCalendar dateCourante = new GregorianCalendar();
+            if (p.getType() == PeriodeType.STANDARD && dateCourante.get(GregorianCalendar.MONTH) == GregorianCalendar.NOVEMBER) {
+                nouvellePeriode = new Periode(dateCourante);
+            } else if (p.getType() == PeriodeType.SOLDES_FETES && dateCourante.get(GregorianCalendar.MONTH) == GregorianCalendar.JANUARY) {
+                nouvellePeriode = new Periode(dateCourante);
+            }
+        }
         
         System.out.println("[INTERNE] Définition de la période terminée");
         return (nouvellePeriode != null) ? nouvellePeriode : p;
