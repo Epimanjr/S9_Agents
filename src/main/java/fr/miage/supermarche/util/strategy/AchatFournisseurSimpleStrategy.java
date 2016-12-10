@@ -66,12 +66,8 @@ public class AchatFournisseurSimpleStrategy implements AchatFournisseurStrategy 
             if (qteDisponible >= qteSouhaitee) {
                 // Si la quantité disponible est suffisante, on s'intéresse au prix proposé
                 
-                // TODO : Ligne à remplacer par la ligne suivante dès que méthode dispo
-                // Float seuil = this.partFournisseurProduits.get(produit.getIdCategorie());
-                Float seuil = this.partFournisseurProduits.get(1);
-                // TODO : Ligne à remplacer par la ligne suivante dès que méthode dispo
-                // Float prixVente = produit.getPrix();
-                Float prixVente = 0.0f;
+                Float seuil = this.partFournisseurProduits.get(produit.getIdCategorie());
+                Float prixVente = produit.getPrix();
                 Float prixMax = (seuil * prixVente);
                 
                 if (prixPropose <= prixMax) {

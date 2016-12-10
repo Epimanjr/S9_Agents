@@ -79,11 +79,11 @@ public class TarificationSimpleStrategy implements TarificationStrategy {
                 } else {
                     prixProducteur = produit.getPrixProduit();
                     // On utilise une estimation de la marge producteur
-                    prixVente = prixAchat * this.mgFourniSurProd.get(idCategorie) * this.mgSupermarcheSurFourni.get(idCategorie);
+                    prixVente = prixProducteur * this.mgFourniSurProd.get(idCategorie) * this.mgSupermarcheSurFourni.get(idCategorie);
                 }
                 
                 produit.setPrix(prixVente);
-                //produit.update();
+                produit.update();
             }
         } catch (SQLException ex) {
             Logger.getLogger(TarificationSimpleStrategy.class.getName()).log(Level.SEVERE, null, ex);

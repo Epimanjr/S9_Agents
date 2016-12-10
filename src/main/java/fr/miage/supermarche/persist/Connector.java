@@ -146,7 +146,6 @@ public class Connector {
     }
 
     public void setConnectionInformation() {
-        // TODO Recherche des informations dans le fichier .properties
         Properties prop = new Properties();
         InputStream input = null;
 
