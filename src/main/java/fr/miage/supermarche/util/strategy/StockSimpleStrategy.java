@@ -60,6 +60,7 @@ public class StockSimpleStrategy implements StockStrategy {
         try {
             // Pour chaque quantité minimale par produit
             for (Map.Entry<String, Integer> qteMinProduit : this.qteMinProduits.entrySet()) {
+                System.out.println("!!!!!!!! je rentre ici");
                 Produit produit = Produit.getByReference(qteMinProduit.getKey());
                 // On utilise la stratégie (définie en début de classe)
                 if (produit.getStock() < (qteMinProduit.getValue() * this.seuil)) {

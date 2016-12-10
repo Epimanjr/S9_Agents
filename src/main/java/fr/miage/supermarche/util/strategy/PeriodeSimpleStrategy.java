@@ -33,6 +33,7 @@ public class PeriodeSimpleStrategy implements PeriodeStrategy {
     @Override
     public Periode define(Periode p) {
         Periode nouvellePeriode = new Periode(null, null, PeriodeType.STANDARD);
+        nouvellePeriode.setStrategy(p.getStrategy());
         return nouvellePeriode;
     }
 

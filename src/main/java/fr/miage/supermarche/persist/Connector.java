@@ -106,7 +106,7 @@ public class Connector {
         Connection connection = Connector.getConnector().getConnection();
         if (connection != null) {
             // Connexion OK
-            System.out.println("Exécution: " + sql);
+            //System.out.println("Exécution: " + sql);
             Statement statement = connection.createStatement();
             statement.executeUpdate(sql);
         }
@@ -124,7 +124,7 @@ public class Connector {
         Connection connection = Connector.getConnector().getConnection();
         if (connection != null) {
             // Connexion OK
-            System.out.println("Sélection: " + sql);
+            //System.out.println("Sélection: " + sql);
             Statement statement = connection.createStatement();
             ResultSet results = statement.executeQuery(sql);
             return results;

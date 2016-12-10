@@ -3,6 +3,7 @@ package fr.miage.supermarche.util.strategy;
 import fr.miage.supermarche.persist.Produit;
 import fr.miage.supermarche.util.Tarification;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -41,6 +42,13 @@ public class TarificationSimpleStrategy implements TarificationStrategy {
      * 
      */
     private Map<Integer, Float> mgSupermarcheSurFourni;
+
+    public TarificationSimpleStrategy() {
+        this.mgFourniSurProd = new HashMap<>();
+        this.initMgFourniSurProd();
+        this.mgSupermarcheSurFourni = new HashMap<>();
+        this.initMgSupermarcheFourni();
+    }
     
     private void initMgFourniSurProd() {
         this.mgFourniSurProd.put(1, 1.30f);
@@ -78,7 +86,6 @@ public class TarificationSimpleStrategy implements TarificationStrategy {
                     prixVente = prixAchat * this.mgSupermarcheSurFourni.get(idCategorie);
                 } else {
                     prixProducteur = produit.getPrixProduit();
-                    // On utilise une estimation de la marge producteur
                     prixVente = prixProducteur * this.mgFourniSurProd.get(idCategorie) * this.mgSupermarcheSurFourni.get(idCategorie);
                 }
                 

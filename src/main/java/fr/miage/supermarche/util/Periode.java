@@ -33,6 +33,11 @@ public class Periode {
      * (Standard, soldes fêtes, soldes flottantes)
      */
     private PeriodeType type;
+    
+    /**
+     * true si on décide que dans 2 semaines,
+     * On sera 
+     */
     private boolean prevenirSoldesFlottantes;
 
     public Periode(Date dateDebut, Date dateFin, PeriodeType type) {

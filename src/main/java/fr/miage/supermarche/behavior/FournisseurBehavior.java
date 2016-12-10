@@ -76,6 +76,7 @@ public class FournisseurBehavior extends CyclicBehaviour {
 
             // On attend de recevoir des messages
             if (aclMsg != null) {
+                System.out.println("yoyoyoyoyo");
                 // Si on reçoit un message
                 if (aclMsg.getContentObject() instanceof MessageInterne) {
                     // Si c'est un message interne (envoyé via SupermarcheBehavior par exemple)

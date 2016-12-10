@@ -94,11 +94,12 @@ public class SpermarcheBehavior extends TickerBehaviour {
             message.aCommander = this.stock.getaCommander();
             // TODO : Envoyer le message à FournisseurBehavior
             // Je ne pense pas que la méthode envoyerMessage fait le job...
-            this.envoyerMessage(this);
+            System.out.println("il est temps d'envoyer un message");
+            this.envoyerMessage(message);
         }
 
         // Gestion des périodes
-        this.periodeActuelle = this.periodeActuelle.define(periodeActuelle);
+        this.periodeActuelle = this.periodeActuelle.define(this.periodeActuelle);;
         if(this.periodeActuelle.isPrevenirSoldesFlottantes()) {
             // TODO (prévenir les clients : soldes dans 2 semaines)
         }
