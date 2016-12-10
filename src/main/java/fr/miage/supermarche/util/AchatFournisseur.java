@@ -11,7 +11,7 @@ import fr.miage.supermarche.util.strategy.AchatFournisseurStrategy;
  */
 public class AchatFournisseur {
 
-    private Integer idProduit;
+    private Long idProduit;
     private float prixProposeParFournisseur;
     private Integer qteSouhaitee;
     private Integer qteDisponibleChezFournisseur;
@@ -37,11 +37,11 @@ public class AchatFournisseur {
         this.strategy = strategy;
     }
 
-    public Integer getIdProduit() {
+    public Long getIdProduit() {
         return idProduit;
     }
 
-    public void setIdProduit(Integer idProduit) {
+    public void setIdProduit(Long idProduit) {
         this.idProduit = idProduit;
     }
 

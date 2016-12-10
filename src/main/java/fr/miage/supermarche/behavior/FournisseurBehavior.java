@@ -92,7 +92,7 @@ public class FournisseurBehavior extends CyclicBehaviour {
                                 ia.idProduit = aCommander.getKey();
                                 ia.quantite = aCommander.getValue();
                                 this.envoyerMessage(ia);
-                                SessionAchat sa = new SessionAchat(Integer.parseInt(ia.idProduit + ""), ia.quantite, TypeMessage.InitierAchat);
+                                SessionAchat sa = new SessionAchat(ia.idProduit, ia.quantite, TypeMessage.InitierAchat);
                                 this.sessionsActives.put(UUIDsessionActive, sa);
                             }
                             break;

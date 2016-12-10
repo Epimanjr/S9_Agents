@@ -8,21 +8,21 @@ import fr.miage.agents.api.message.TypeMessage;
  */
 public class SessionAchat {
 
-    private Integer idProduit;
+    private Long idProduit;
     private Integer qteSouhaitee;
     private TypeMessage etat;
 
-    public SessionAchat(int idProduit, int qteSouhaitee, TypeMessage etat) {
+    public SessionAchat(Long idProduit, int qteSouhaitee, TypeMessage etat) {
         this.idProduit = idProduit;
         this.qteSouhaitee = qteSouhaitee;
         this.etat = etat;
     }
 
-    public Integer getIdProduit() {
+    public Long getIdProduit() {
         return idProduit;
     }
 
-    public void setIdProduit(Integer idProduit) {
+    public void setIdProduit(Long idProduit) {
         this.idProduit = idProduit;
     }
 

@@ -69,19 +69,15 @@ public class TarificationSimpleStrategy implements TarificationStrategy {
         try {
             List<Produit> produits = Produit.getAllProduit();
             for(Produit produit : produits) {
-                //idCategorie = Produit.getIdCategorie();
-                idCategorie = 1;
+                idCategorie = produit.getIdCategorie();
                 
-                //prixAchat = produit.getPrixAchat;
-                prixAchat = 1.0f;
+                prixAchat = produit.getPrixAchat();
                 
                 if(prixAchat != (-1.0f)) {
                     // Si on a déjà une fois acheté ce produit
                     prixVente = prixAchat * this.mgSupermarcheSurFourni.get(idCategorie);
                 } else {
-                    //prixProducteur = produit.getPrixProducteur();
-                    prixProducteur = 0.30f;
-                    
+                    prixProducteur = produit.getPrixProduit();
                     // On utilise une estimation de la marge producteur
                     prixVente = prixAchat * this.mgFourniSurProd.get(idCategorie) * this.mgSupermarcheSurFourni.get(idCategorie);
                 }

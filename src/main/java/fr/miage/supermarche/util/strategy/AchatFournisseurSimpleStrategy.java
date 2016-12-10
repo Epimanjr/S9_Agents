@@ -5,6 +5,7 @@ import fr.miage.supermarche.util.AchatFournisseur;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -54,21 +55,21 @@ public class AchatFournisseurSimpleStrategy implements AchatFournisseurStrategy 
      */
     @Override
     public boolean approuver(AchatFournisseur af) {
-        try {
-            // TODO : remplacer par la ligne suivante dès que la méthode sera dispo
-            //Produit produit = Produit.getById(af.getIdProduit());
-            Produit produit = Produit.getByReference("todo");
+        Optional<Produit> oProduit = Produit.getById(af.getIdProduit());
+        if (oProduit.isPresent()) {
+            Produit produit = oProduit.get();
+            
             Float prixPropose = af.getPrixProposeParFournisseur();
             Integer qteSouhaitee = af.getQteSouhaitee();
             Integer qteDisponible = af.getQteDisponibleChezFournisseur();
-
+            
             if (qteDisponible >= qteSouhaitee) {
                 // Si la quantité disponible est suffisante, on s'intéresse au prix proposé
                 
                 // TODO : Ligne à remplacer par la ligne suivante dès que méthode dispo
                 // Float seuil = this.partFournisseurProduits.get(produit.getIdCategorie());
                 Float seuil = this.partFournisseurProduits.get(1);
-                // TODO : Ligne à remplacer par la ligne suivante dès que méthode dispo                
+                // TODO : Ligne à remplacer par la ligne suivante dès que méthode dispo
                 // Float prixVente = produit.getPrix();
                 Float prixVente = 0.0f;
                 Float prixMax = (seuil * prixVente);
@@ -79,16 +80,14 @@ public class AchatFournisseurSimpleStrategy implements AchatFournisseurStrategy 
                 } else {
                     // Si le prix est trop élevé, on propose un prix plus bas
                     /**
-                     * Exemple :
-                     * Si : il propose 100 alors que notre prix max est de 80
-                     * Alors : on lui propose [80-(100-80)] soit 60
+                     * Exemple : Si : il propose 100 alors que notre prix
+                     * max est de 80 Alors : on lui propose [80-(100-80)]
+                     * soit 60
                      */
                     af.setPrixANegocier(prixMax - (prixPropose - prixMax));
                     return false;
                 }
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(AchatFournisseurSimpleStrategy.class.getName()).log(Level.SEVERE, null, ex);
         }
         // Si le fournisseur n'a pas la quantité suffisante,
         // On l'indique en mettant le prix à négocier à (-1)
