@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class ImportHelper {
 
-    public void run() {
+    /*public void run() {
         InputStream input = null;
 
         try {
@@ -61,7 +61,7 @@ public class ImportHelper {
                 }
             }
         }
-    }
+    }*/
 
     public static void setIdToRef() {
         try {
