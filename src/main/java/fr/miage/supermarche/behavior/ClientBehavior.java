@@ -4,9 +4,11 @@ import fr.miage.agents.api.message.Message;
 import fr.miage.agents.api.message.recherche.Rechercher;
 import fr.miage.agents.api.message.recherche.ResultatRecherche;
 import fr.miage.agents.api.message.relationclientsupermarche.Achat;
+import fr.miage.agents.api.message.relationclientsupermarche.ResultatAchat;
 import fr.miage.agents.api.message.relationclientsupermarche.ResultatDistance;
 import fr.miage.supermarche.persist.Produit;
 import fr.miage.supermarche.persist.RequetesClient;
+import fr.miage.supermarche.persist.RequetesInternes;
 import fr.miage.supermarche.util.ApiProduit;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -29,7 +31,7 @@ public class ClientBehavior extends CyclicBehaviour {
     public ClientBehavior(Agent a) {
         super(a);
     }
-    
+
     @Override
     public void action() {
         ACLMessage aclMsg = this.getAgent().receive();
@@ -44,15 +46,12 @@ public class ClientBehavior extends CyclicBehaviour {
                     // Le client désire rechercher un Produit
                     case Recherche:
                         Rechercher r = (Rechercher) recu;
-                        this.gererRecherche(r);  
+                        this.gererRecherche(r);
                         break;
 
                     // On reçoit une demande pour acheter des produits
                     case InitierAchat:
-                        Achat a = (Achat) recu;
-
-                        // traiter la liste de courses
-                        // renvoyer un résultat achat
+                        this.gererAchat(recu);
                         break;
                     // Demande de la distance
                     case DemandeDistance:
@@ -67,40 +66,75 @@ public class ClientBehavior extends CyclicBehaviour {
             }
         }
     }
-    
+
+    /**
+     * Gère un achat.
+     *
+     * @param recu Message reçu.
+     */
+    private void gererAchat(Message recu) {
+        // Initialisation
+        Achat achat = (Achat) recu;
+        ResultatAchat resultatAchat = new ResultatAchat();
+        resultatAchat.session = achat.Session;
+        
+        // TODO Gérer un achat
+        resultatAchat.courses = new HashMap<>();
+        Iterator<Integer> itProduits = achat.listeCourses.keySet().iterator();
+        while(itProduits.hasNext()) {
+            Integer idProduit = itProduits.next();
+            Integer qteProduit = achat.listeCourses.get(idProduit);
+            
+            boolean flagRetire = RequetesInternes.retirerProduit(idProduit, qteProduit);
+            Integer value = (flagRetire) ? qteProduit : 0;
+            
+            fr.miage.agents.api.model.Produit p = new fr.miage.agents.api.model.Produit();
+            p.idProduit = idProduit;
+            
+            Map<Boolean,Integer> mapValue = new HashMap<>();
+            mapValue.put(flagRetire, value);
+            
+            resultatAchat.courses.put(p, mapValue);
+        }
+        
+        // Fin des courses !
+        this.envoyerMessage(resultatAchat);
+    }
+
     /**
      * Gère les demandes de distance
      */
-    private void gererDemandeDistance(){
+    private void gererDemandeDistance() {
         // on récupère notre distance \m/
         double distance = 66.6;
         int delai = 3;
         ResultatDistance rd = new ResultatDistance();
         rd.distance = distance;
         rd.delai = delai;
-        
+
         // on envoit notre réponse
         this.envoyerMessage(rd);
     }
-    
+
     /**
      * Gère la recherche d'un produit
+     *
      * @param r le message reçu avec les informatios de Recherche
      */
     private void gererRecherche(Rechercher r) {
         Long id = r.idProduit;
-        if(id != null)
+        if (id != null) {
             rechercheProduitParId(r.idProduit, r.session);
-        else
+        } else {
             rechercheProduitParCriteres(r);
+        }
     }
 
-
-    private void rechercheProduitParId(long id, UUID session){
+    private void rechercheProduitParId(long id, UUID session) {
         Optional<Produit> maybe_p = Produit.getById(id);
         List<ApiProduit> ps = new LinkedList<>();
 
-        if(maybe_p.isPresent()){
+        if (maybe_p.isPresent()) {
             ApiProduit evilP = maybe_p.get().toApiProduit();
             ps.add(evilP);
         }
@@ -111,7 +145,7 @@ public class ClientBehavior extends CyclicBehaviour {
         this.envoyerMessage(rr);
     }
 
-    private void rechercheProduitParCriteres(Rechercher r){
+    private void rechercheProduitParCriteres(Rechercher r) {
         // Récupération de notre liste de produits en fonction des critères
         List<Integer> ids = new ArrayList<>();
 
@@ -125,24 +159,26 @@ public class ClientBehavior extends CyclicBehaviour {
         ArrayList<Integer> notFound = new ArrayList<>();  // TODO, en faire quelquechose ?
 
         ids.stream().map(id -> {
-                    // for each id, make an hmap of {"id" -> id,  "produit" -> ¿Produit? }
-                    return new HashMap<String, Object>(){{
-                        put("id", id);
-                        put("produit", Produit.getById((long) id));
-                    }};
+            // for each id, make an hmap of {"id" -> id,  "produit" -> ¿Produit? }
+            return new HashMap<String, Object>() {
+                {
+                    put("id", id);
+                    put("produit", Produit.getById((long) id));
                 }
+            };
+        }
         ).forEach(hmap -> {
             // Get the Produit. Maybe there is no product, so it's Optional.
             Optional<Produit> produit = (Optional<Produit>) hmap.get("produit");
-            int id  = (int) hmap.get("id");  // get the id too
+            int id = (int) hmap.get("id");  // get the id too
 
-            if(produit.isPresent())
+            if (produit.isPresent()) {
                 produits.add(produit.get());
-            else
+            } else {
                 notFound.add(id);
+            }
 
             // Now we know which ones are found and which ones aren't.
-
         });
 
         // on met notre liste dans un message de l'api
@@ -153,23 +189,24 @@ public class ClientBehavior extends CyclicBehaviour {
         // on envoit le message
         this.envoyerMessage(rr);
     }
-    
+
     /**
      * Envoi le message aux agents
+     *
      * @param s l'objet de l'api à envoyer
      */
-    private void envoyerMessage(Serializable s){
+    private void envoyerMessage(Serializable s) {
         try {
             // création du message pour JADE
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
             msg.setContentObject(s);
-            
+
             // envoit du message
             this.getAgent().send(msg);
-            
+
         } catch (IOException ex) {
             Logger.getLogger(ClientBehavior.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 }
