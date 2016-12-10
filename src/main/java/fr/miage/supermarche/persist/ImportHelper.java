@@ -77,10 +77,14 @@ public class ImportHelper {
             Logger.getLogger(ImportHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public static void setRefToId() {
+        // TODO 
+    }
 
     public static void main(String[] args) {
         /*ImportHelper ih = new ImportHelper();
         ih.run();*/
-        setIdToRef();
+        // setIdToRef();
     }
 }

@@ -27,6 +27,11 @@ public class Produit {
      * Nom du produit.
      */
     private String nomProduit;
+    
+    /**
+     * Référence produit (généré).
+     */
+    private String refProduit;
 
     /**
      * Description du produit.
@@ -70,6 +75,7 @@ public class Produit {
 
     private  Produit(ResultSet rs) throws SQLException {
         idProduit = rs.getInt("idProduit");
+        refProduit = rs.getString("refProduit");
         nomProduit = rs.getString("nomProduit");
         marqueProduit = rs.getString("marqueProduit"); 
         descriptionProduit = rs.getString("descriptionProduit");
@@ -225,6 +231,16 @@ public class Produit {
     public void setStock(int stock) {
         this.stock = stock;
     }
+
+    public String getRefProduit() {
+        return refProduit;
+    }
+
+    public void setRefProduit(String refProduit) {
+        this.refProduit = refProduit;
+    }
+    
+    
 
     @Override
     public int hashCode() {

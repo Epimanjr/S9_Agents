@@ -26,7 +26,7 @@ public class RequetesClient {
      */
     public static List<Integer> getIdWithCriteres(String nom, String categorie, String marque, int prixMin, int prixMax) throws SQLException {
         List<Integer> produits = new ArrayList<>();
-        ResultSet results = Connector.select("SELECT id, nom, description, marque, prix FROM produit");
+        ResultSet results = Connector.select("SELECT idProduit, nomProduit, nomCategorie, marqueProduit, prix FROM produit NATURAL JOIN categorie");
         while (results.next()) {
             // TODO ajouter produit à la liste si compatible
 
@@ -38,27 +38,27 @@ public class RequetesClient {
                 boolean flag = false;
 
                 if (!nom.equals("")) {
-                    String nomProduit = results.getString("nom");
+                    String nomProduit = results.getString("nomProduit");
                     if (nom.equalsIgnoreCase(nomProduit)) {
-                        int id = results.getInt("id");
+                        int id = results.getInt("idProduit");
                         produits.add(id);
                         flag = true;
                     }
                 }
 
                 if (!flag && !categorie.equals("")) {
-                    String categorieProduit = results.getString("type");
+                    String categorieProduit = results.getString("nomCategorie");
                     if (categorie.equalsIgnoreCase(categorieProduit)) {
-                        int id = results.getInt("id");
+                        int id = results.getInt("idProduit");
                         produits.add(id);
                         flag = true;
                     }
                 }
 
                 if (!flag && !marque.equals("")) {
-                    String marqueProduit = results.getString("marque");
+                    String marqueProduit = results.getString("marqueProduit");
                     if (marque.equalsIgnoreCase(marqueProduit)) {
-                        int id = results.getInt("id");
+                        int id = results.getInt("idProduit");
                         produits.add(id);
                     }
                 }
@@ -78,12 +78,12 @@ public class RequetesClient {
         double seuil = 30.0;
 
         List<Integer> produits = new ArrayList<>();
-        ResultSet results = Connector.select("SELECT id, nom, description, marque FROM produit");
+        ResultSet results = Connector.select("SELECT idProduit, nomProduit, descriptionProduit, marqueProduit FROM produit");
         while (results.next()) {
             List<String> mots = new ArrayList<>();
-            String[] tab1 = results.getString("nom").split(" ");
-            String[] tab2 = results.getString("description").split(" ");
-            String[] tab3 = results.getString("marque").split(" ");
+            String[] tab1 = results.getString("nomProduit").split(" ");
+            String[] tab2 = results.getString("descriptionProduit").split(" ");
+            String[] tab3 = results.getString("marqueProduit").split(" ");
 
             for (String s : tab1) {
                 mots.add(s.toLowerCase());
@@ -105,7 +105,7 @@ public class RequetesClient {
 
             double nb = nbOccurences * 100 / criteresTab.length;
             if (nb > seuil) {
-                produits.add(results.getInt("id"));
+                produits.add(results.getInt("idProduit"));
             }
         }
         return produits;
