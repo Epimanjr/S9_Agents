@@ -29,6 +29,11 @@ public class StockSimpleStrategy implements StockStrategy {
 
     /**
      * Seuil de tolérance avant réapprovisionnement
+     * 
+     * Exemple:
+     * Si on souhaite avoir en général 250 produits "XB2212"
+     * On déclenche un réapprov. dès qu'on en a seuil*250 ou moins
+     * 
      */
     private Double seuil;
     

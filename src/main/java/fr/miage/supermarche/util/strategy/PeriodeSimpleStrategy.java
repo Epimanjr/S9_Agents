@@ -14,7 +14,7 @@ public class PeriodeSimpleStrategy implements PeriodeStrategy {
 
     /**
      * La période p en paramètre est la période actuelle.
-     * La période retournée est la nouvelle période (p+1)
+     * La période retournée est la nouvelle période (p+1).
      * L'idée, c'est de savoir si on est :
      *   - en période standard (jan. -> oct.)
      *          (impossible de vendre à perte)

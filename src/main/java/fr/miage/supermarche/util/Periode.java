@@ -14,12 +14,24 @@ import java.util.Date;
 public class Periode {
 
     /**
-     * Stratégie de calcul
+     * Stratégie de définition
      */
     private PeriodeStrategy strategy;
     
+    /**
+     * Date de début de la période
+     */
     private Date dateDebut;
+    
+    /**
+     * Date de fin de la période
+     */
     private Date dateFin;
+    
+    /**
+     * Type de la période
+     * (Standard, soldes fêtes, soldes flottantes)
+     */
     private PeriodeType type;
     private boolean prevenirSoldesFlottantes;
 
