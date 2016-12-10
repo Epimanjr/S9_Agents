@@ -15,69 +15,76 @@ import java.util.Optional;
 public class Produit {
 
     private static final String TABLE_NAME = "produit";
-    private static final String[] FIELDS = {"reference", "nom", "description", "marque", "type", "prix", "stock"};
+    private static final String[] FIELDS = {"nomProduit", "marqueProduit", "descriptionProduit", "prixProduit", "prix", "prixAchat", "stock", "idCategorie"};
 
 
     /**
      * Référence numérique ( ¿clé primaire? )
      */
-    private int id;
-
-    /**
-     * Référence du produit (clé primaire)
-     */
-    private String reference;
+    private int idProduit;
 
     /**
      * Nom du produit.
      */
-    private String nom;
+    private String nomProduit;
 
     /**
      * Description du produit.
      */
-    private String description;
+    private String descriptionProduit;
 
     /**
      * Marque du produit.
      */
-    private String marque;
+    private String marqueProduit;
 
     /**
-     * Type du produit.
+     * Categorie du produit.
      */
-    private String type;
+    private String categorie;
+    
+    private int idCategorie;
 
     /**
-     * Prix du produit.
+     * Prix du produit (de vente, supermarché).
      */
-    private double prix;
+    private float prix = -1f;
+    
+    /**
+     * Prix du produit (producteur).
+     */
+    private float prixProduit;
+    
+    /**
+     * Prix du produit (fournisseur).
+     */
+    private float prixAchat = -1f;
 
     /**
      * Nombre de ce produit en stock.
      */
-    private int stock;
+    private int stock = 0;
 
     public Produit() {
     }
 
     private  Produit(ResultSet rs) throws SQLException {
-        id = rs.getInt("id");
-        reference = rs.getString("reference");
-        nom = rs.getString("nom");
-        description = rs.getString("description");
-        marque = rs.getString("marque");
-        type = rs.getString("type");
-        prix = rs.getDouble("prix");
+        idProduit = rs.getInt("idProduit");
+        nomProduit = rs.getString("nomProduit");
+        marqueProduit = rs.getString("marqueProduit"); 
+        descriptionProduit = rs.getString("descriptionProduit");
+        prix = rs.getFloat("prix");
+        prixProduit = rs.getFloat("prixProduit");
+        prixAchat = rs.getFloat("prixAchat");
         stock = rs.getInt("stock");
+        idCategorie = rs.getInt("idCategorie");
     }
 
-    public Produit(String reference, String nom, String description, String marque, String type, double prix, int stock) {
-        this.reference = reference;
-        this.nom = nom;
-        this.description = description;
-        this.marque = marque;
-        this.type = type;
+    public Produit(String reference, String nom, String description, String marque, String type, float prix, int stock) {
+        this.nomProduit = nom;
+        this.descriptionProduit = description;
+        this.marqueProduit = marque;
+        this.categorie = type;
         this.prix = prix;
         this.stock = stock;
     }
@@ -126,27 +133,111 @@ public class Produit {
             sql += ", " + FIELDS[i];
         }
         sql += ") VALUES("
-                + "'" + this.reference + "'"
-                + ", '" + this.nom + "'"
-                + ", '" + this.description + "'"
-                + ", '" + this.marque + "'"
-                + ", '" + this.type + "'"
+                + "'" + this.nomProduit + "'"
+                + ", '" + this.marqueProduit + "'"
+                + ", '" + this.descriptionProduit + "'"
+                + ", " + this.prixProduit
                 + ", " + this.prix
+                + ", " + this.prixAchat
                 + ", " + this.stock
+                + ", " + this.idCategorie
                 + ")";
 
         Connector.insert(sql);
     }
 
+    public int getIdProduit() {
+        return idProduit;
+    }
+
+    public void setIdProduit(int idProduit) {
+        this.idProduit = idProduit;
+    }
+
+    public String getNomProduit() {
+        return nomProduit;
+    }
+
+    public void setNomProduit(String nomProduit) {
+        this.nomProduit = nomProduit;
+    }
+
+    public String getDescriptionProduit() {
+        return descriptionProduit;
+    }
+
+    public void setDescriptionProduit(String descriptionProduit) {
+        this.descriptionProduit = descriptionProduit;
+    }
+
+    public String getMarqueProduit() {
+        return marqueProduit;
+    }
+
+    public void setMarqueProduit(String marqueProduit) {
+        this.marqueProduit = marqueProduit;
+    }
+
+    public String getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
+    }
+
+    public int getIdCategorie() {
+        return idCategorie;
+    }
+
+    public void setIdCategorie(int idCategorie) {
+        this.idCategorie = idCategorie;
+    }
+
+    public float getPrix() {
+        return prix;
+    }
+
+    public void setPrix(float prix) {
+        this.prix = prix;
+    }
+
+    public float getPrixProduit() {
+        return prixProduit;
+    }
+
+    public void setPrixProduit(float prixProduit) {
+        this.prixProduit = prixProduit;
+    }
+
+    public float getPrixAchat() {
+        return prixAchat;
+    }
+
+    public void setPrixAchat(float prixAchat) {
+        this.prixAchat = prixAchat;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.reference);
-        hash = 29 * hash + Objects.hashCode(this.nom);
-        hash = 29 * hash + Objects.hashCode(this.description);
-        hash = 29 * hash + Objects.hashCode(this.marque);
-        hash = 29 * hash + Objects.hashCode(this.type);
-        hash = 29 * hash + (int) (Double.doubleToLongBits(this.prix) ^ (Double.doubleToLongBits(this.prix) >>> 32));
+        hash = 29 * hash + this.idProduit;
+        hash = 29 * hash + Objects.hashCode(this.nomProduit);
+        hash = 29 * hash + Objects.hashCode(this.descriptionProduit);
+        hash = 29 * hash + Objects.hashCode(this.marqueProduit);
+        hash = 29 * hash + Objects.hashCode(this.categorie);
+        hash = 29 * hash + this.idCategorie;
+        hash = 29 * hash + Float.floatToIntBits(this.prix);
+        hash = 29 * hash + Float.floatToIntBits(this.prixProduit);
+        hash = 29 * hash + Float.floatToIntBits(this.prixAchat);
         hash = 29 * hash + this.stock;
         return hash;
     }
@@ -163,109 +254,54 @@ public class Produit {
             return false;
         }
         final Produit other = (Produit) obj;
-        if (Double.doubleToLongBits(this.prix) != Double.doubleToLongBits(other.prix)) {
+        if (this.idProduit != other.idProduit) {
+            return false;
+        }
+        if (this.idCategorie != other.idCategorie) {
+            return false;
+        }
+        if (Float.floatToIntBits(this.prix) != Float.floatToIntBits(other.prix)) {
+            return false;
+        }
+        if (Float.floatToIntBits(this.prixProduit) != Float.floatToIntBits(other.prixProduit)) {
+            return false;
+        }
+        if (Float.floatToIntBits(this.prixAchat) != Float.floatToIntBits(other.prixAchat)) {
             return false;
         }
         if (this.stock != other.stock) {
             return false;
         }
-        if (!Objects.equals(this.reference, other.reference)) {
+        if (!Objects.equals(this.nomProduit, other.nomProduit)) {
             return false;
         }
-        if (!Objects.equals(this.nom, other.nom)) {
+        if (!Objects.equals(this.descriptionProduit, other.descriptionProduit)) {
             return false;
         }
-        if (!Objects.equals(this.description, other.description)) {
+        if (!Objects.equals(this.marqueProduit, other.marqueProduit)) {
             return false;
         }
-        if (!Objects.equals(this.marque, other.marque)) {
-            return false;
-        }
-        if (!Objects.equals(this.type, other.type)) {
+        if (!Objects.equals(this.categorie, other.categorie)) {
             return false;
         }
         return true;
     }
 
-    public int getId() {
-        return id;
+    @Override
+    public String toString() {
+        return "Produit{" + "idProduit=" + idProduit + ", nomProduit=" + nomProduit + ", descriptionProduit=" + descriptionProduit + ", marqueProduit=" + marqueProduit + ", categorie=" + categorie + ", idCategorie=" + idCategorie + ", prix=" + prix + ", prixProduit=" + prixProduit + ", prixAchat=" + prixAchat + ", stock=" + stock + '}';
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getReference() {
-        return reference;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getMarque() {
-        return marque;
-    }
-
-    public void setMarque(String marque) {
-        this.marque = marque;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public double getPrix() {
-        return prix;
-    }
-
-    public void setPrix(double prix) {
-        this.prix = prix;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
-
 
     public ApiProduit toApiProduit(){
         ApiProduit evilProd = new ApiProduit();
-        evilProd.idProduit = this.id;
+        evilProd.idProduit = this.idProduit;
         //public Categorie idCategorie; TODO
-        evilProd.nomProduit = this.nom;
-        evilProd.descriptionProduit = this.description;
+        evilProd.nomProduit = this.nomProduit;
+        evilProd.descriptionProduit = this.descriptionProduit;
         evilProd.prixProduit = (float) this.prix;
-        evilProd.marque = this.marque;
+        evilProd.marque = this.marqueProduit;
         return evilProd;
     }
 
-    @Override
-    public String toString() {
-        return "Produit{" + "reference=" + reference + ", nom=" + nom + ", description=" + description + ", marque=" + marque + ", type=" + type + ", prix=" + prix + ", stock=" + stock + '}';
-    }
-
+    
 }
