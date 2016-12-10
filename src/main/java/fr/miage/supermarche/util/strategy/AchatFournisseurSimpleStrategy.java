@@ -55,6 +55,7 @@ public class AchatFournisseurSimpleStrategy implements AchatFournisseurStrategy 
      */
     @Override
     public boolean approuver(AchatFournisseur af) {
+        System.out.println("[FOURNISSEUR] Etude d'un achat en cours ...");
         Optional<Produit> oProduit = Produit.getById(af.getIdProduit());
         if (oProduit.isPresent()) {
             Produit produit = oProduit.get();
@@ -88,6 +89,7 @@ public class AchatFournisseurSimpleStrategy implements AchatFournisseurStrategy 
         // Si le fournisseur n'a pas la quantité suffisante,
         // On l'indique en mettant le prix à négocier à (-1)
         af.setPrixANegocier(-1);
+        System.out.println("[FOURNISSEUR] Etude d'un achat terminée ...");
         return false;
     }
 

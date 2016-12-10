@@ -75,6 +75,7 @@ public class TarificationSimpleStrategy implements TarificationStrategy {
         Float prixVente;
         Integer idCategorie;
         try {
+            System.out.println("[INTERNE] Tarification en cours ...");
             List<Produit> produits = Produit.getAllProduit();
             for(Produit produit : produits) {
                 idCategorie = produit.getIdCategorie();
@@ -92,6 +93,7 @@ public class TarificationSimpleStrategy implements TarificationStrategy {
                 produit.setPrix(prixVente);
                 produit.update();
             }
+            System.out.println("[INTERNE] Tarification terminée");
         } catch (SQLException ex) {
             Logger.getLogger(TarificationSimpleStrategy.class.getName()).log(Level.SEVERE, null, ex);
         }

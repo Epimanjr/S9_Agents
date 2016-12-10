@@ -31,7 +31,7 @@ import java.util.List;
 public class Supermarche extends Agent {
 
     protected void setup() {
-        System.out.println("Je suis une super supermarché dont le nom est : " + this.getLocalName());
+        System.out.println("\n[SUPERMARCHE] Lancement de '" + this.getLocalName() + "'");
 
         /**
          * Enregistrement l'agent dans les pages jaunes
@@ -67,7 +67,7 @@ public class Supermarche extends Agent {
         FournisseurBehavior fournisseur = new FournisseurBehavior(this, af);
         SpermarcheBehavior supermarche = new SpermarcheBehavior(this, 6000, stock, periode, tarification);
         
-        List<Behaviour> behaviors = Arrays.asList(client, fournisseur, supermarche);
+        List<Behaviour> behaviors = Arrays.asList(fournisseur, client, supermarche);
         
         behaviors.forEach(it -> addBehaviour(it));
     }

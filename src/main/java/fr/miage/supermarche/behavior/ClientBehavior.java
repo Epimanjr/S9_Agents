@@ -34,36 +34,36 @@ public class ClientBehavior extends CyclicBehaviour {
 
     @Override
     public void action() {
-        ACLMessage aclMsg = this.getAgent().receive();
+        try {
+            ACLMessage aclMsg = this.getAgent().receive();
 
-        // On gère le message reçu par la plateforme
-        if (aclMsg != null) {
-            try {
-                // Récupèration du Message de l'API
-                Message recu = (Message) aclMsg.getContentObject();
+            // On attend de recevoir des messages
+            if (aclMsg != null) {
+                // Si on reçoit un message
+                if (aclMsg.getContentObject() instanceof Message) {
+                    Message recu = (Message) aclMsg.getContentObject();
+                    switch (recu.type) {
+                        // Le client désire rechercher un Produit
+                        case Recherche:
+                            Rechercher r = (Rechercher) recu;
+                            this.gererRecherche(r);
+                            break;
 
-                switch (recu.type) {
-                    // Le client désire rechercher un Produit
-                    case Recherche:
-                        Rechercher r = (Rechercher) recu;
-                        this.gererRecherche(r);
-                        break;
-
-                    // On reçoit une demande pour acheter des produits
-                    case InitierAchat:
-                        this.gererAchat(recu);
-                        break;
-                    // Demande de la distance
-                    case DemandeDistance:
-                        this.gererDemandeDistance();
-                        break;
-                    default:
-                        break;
+                        // On reçoit une demande pour acheter des produits
+                        case InitierAchat:
+                            this.gererAchat(recu);
+                            break;
+                        // Demande de la distance
+                        case DemandeDistance:
+                            this.gererDemandeDistance();
+                            break;
+                        default:
+                            break;
+                    }
                 }
-
-            } catch (UnreadableException e) {
-                Logger.getLogger(ClientBehavior.class.getName()).log(Level.SEVERE, null, e);
             }
+        } catch (UnreadableException e) {
+            Logger.getLogger(ClientBehavior.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -77,26 +77,26 @@ public class ClientBehavior extends CyclicBehaviour {
         Achat achat = (Achat) recu;
         ResultatAchat resultatAchat = new ResultatAchat();
         resultatAchat.session = achat.Session;
-        
+
         // TODO Gérer un achat
         resultatAchat.courses = new HashMap<>();
         Iterator<Integer> itProduits = achat.listeCourses.keySet().iterator();
-        while(itProduits.hasNext()) {
+        while (itProduits.hasNext()) {
             Integer idProduit = itProduits.next();
             Integer qteProduit = achat.listeCourses.get(idProduit);
-            
+
             boolean flagRetire = RequetesInternes.retirerProduit(idProduit, qteProduit);
             Integer value = (flagRetire) ? qteProduit : 0;
-            
+
             fr.miage.agents.api.model.Produit p = new fr.miage.agents.api.model.Produit();
             p.idProduit = idProduit;
-            
-            Map<Boolean,Integer> mapValue = new HashMap<>();
+
+            Map<Boolean, Integer> mapValue = new HashMap<>();
             mapValue.put(flagRetire, value);
-            
+
             resultatAchat.courses.put(p, mapValue);
         }
-        
+
         // Fin des courses !
         this.envoyerMessage(resultatAchat);
     }
@@ -151,8 +151,10 @@ public class ClientBehavior extends CyclicBehaviour {
 
         try {
             ids = RequetesClient.getIdWithCriteres("", r.nomCategorie, r.marque, ((int) r.prixMin), ((int) r.prixMax));
+
         } catch (SQLException ex) {
-            Logger.getLogger(ClientBehavior.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ClientBehavior.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
         ArrayList<Produit> produits = new ArrayList<>();
@@ -205,7 +207,8 @@ public class ClientBehavior extends CyclicBehaviour {
             this.getAgent().send(msg);
 
         } catch (IOException ex) {
-            Logger.getLogger(ClientBehavior.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ClientBehavior.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
     }

@@ -17,10 +17,13 @@ import fr.miage.supermarche.util.SessionAchat;
 import fr.miage.supermarche.util.strategy.AchatFournisseurSimpleStrategy;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -54,6 +57,7 @@ public class FournisseurBehavior extends CyclicBehaviour {
      */
     public FournisseurBehavior(Agent a) {
         super(a);
+        this.sessionsActives = new HashMap<>();
         this.achatFournisseur = new AchatFournisseur();
         this.achatFournisseur.setStrategy(new AchatFournisseurSimpleStrategy());
     }
@@ -66,24 +70,29 @@ public class FournisseurBehavior extends CyclicBehaviour {
      */
     public FournisseurBehavior(Agent a, AchatFournisseur af) {
         super(a);
+        this.sessionsActives = new HashMap<>();
         this.achatFournisseur = af;
     }
-
+    
     @Override
     public void action() {
+        boolean message = false;
+        boolean messageInterne = true;
         try {
             ACLMessage aclMsg = this.getAgent().receive();
 
             // On attend de recevoir des messages
             if (aclMsg != null) {
-                System.out.println("yoyoyoyoyo");
                 // Si on reçoit un message
-                if (aclMsg.getContentObject() instanceof MessageInterne) {
+                
+                //if (aclMsg.getContentObject() instanceof MessageInterne) {
+                if (messageInterne) {
+                    System.out.println("[FOURNISSEUR] Message interne reçu");
                     // Si c'est un message interne (envoyé via SupermarcheBehavior par exemple)
                     MessageInterne recu = (MessageInterne) aclMsg.getContentObject();
                     switch (recu.type) {
                         case demandeReapprov:
-                            System.out.println("demandeReapprov");
+                            System.out.println("[FOURNISSEUR] Le message est une demande de réapprovisionnement");
                             // ETAPE 0 : On reçoit une demande de réapprovisionnement
                             // Pour tous les éléments de la liste aCommander
                             for (Map.Entry<Integer, Integer> aCommander : recu.aCommander.entrySet()) {

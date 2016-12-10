@@ -10,9 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Définit une stratégie simple de gestion du stock
- * Si le stock disponible est inférieur à (seuil * qteMin souhaitée)
- * Alors on doit se réapprovisionner
+ * Définit une stratégie simple de gestion du stock Si le stock disponible est
+ * inférieur à (seuil * qteMin souhaitée) Alors on doit se réapprovisionner
  *
  * @author Antoine NOSAL
  * @author Maxime BLAISE
@@ -22,27 +21,26 @@ import java.util.logging.Logger;
 public class StockSimpleStrategy implements StockStrategy {
 
     /**
-     * Quantités minimum en stock pour chaque produit
-     * référenceProduit -> qte minimum
+     * Quantités minimum en stock pour chaque produit référenceProduit -> qte
+     * minimum
      */
     private Map<String, Integer> qteMinProduits;
 
     /**
      * Seuil de tolérance avant réapprovisionnement
-     * 
-     * Exemple:
-     * Si on souhaite avoir en général 250 produits "XB2212"
-     * On déclenche un réapprov. dès qu'on en a seuil*250 ou moins
-     * 
+     *
+     * Exemple: Si on souhaite avoir en général 250 produits "XB2212" On
+     * déclenche un réapprov. dès qu'on en a seuil*250 ou moins
+     *
      */
     private Double seuil;
-    
+
     public StockSimpleStrategy(Double seuil) {
         this.qteMinProduits = new HashMap<>();
         this.initQteMinProduits();
         this.seuil = seuil;
     }
-    
+
     /**
      * Définit une quantité minimum souhaitée en stock pour chaque produit
      */
@@ -53,21 +51,22 @@ public class StockSimpleStrategy implements StockStrategy {
         this.qteMinProduits.put("BOSN508", 50);
         this.qteMinProduits.put("BOVI359", 450);
     }
-    
+
     @Override
     public void analyse(Stock s) {
         int qteManquante;
         try {
+            System.out.println("[INTENRE] Analyse des stocks en cours ...");
             // Pour chaque quantité minimale par produit
             for (Map.Entry<String, Integer> qteMinProduit : this.qteMinProduits.entrySet()) {
-                System.out.println("!!!!!!!! je rentre ici");
                 Produit produit = Produit.getByReference(qteMinProduit.getKey());
                 // On utilise la stratégie (définie en début de classe)
                 if (produit.getStock() < (qteMinProduit.getValue() * this.seuil)) {
-                    qteManquante = (int) ((qteMinProduit.getValue()*1.20) - produit.getStock());
+                    qteManquante = (int) ((qteMinProduit.getValue() * 1.20) - produit.getStock());
                     s.aCommander.put(produit.getIdProduit(), qteManquante);
                 }
             }
+            System.out.println("[INTENRE] Analyse des stocks en cours terminée");
         } catch (SQLException ex) {
             Logger.getLogger(SpermarcheBehavior.class.getName()).log(Level.SEVERE, null, ex);
         }

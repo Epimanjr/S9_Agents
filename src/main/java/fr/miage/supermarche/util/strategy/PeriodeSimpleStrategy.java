@@ -32,8 +32,10 @@ public class PeriodeSimpleStrategy implements PeriodeStrategy {
      */
     @Override
     public Periode define(Periode p) {
+        System.out.println("[INTERNE] Définition de la période en cours ...");
         Periode nouvellePeriode = new Periode(null, null, PeriodeType.STANDARD);
         nouvellePeriode.setStrategy(p.getStrategy());
+        System.out.println("[INTERNE] Définition de la période terminée");
         return nouvellePeriode;
     }
 

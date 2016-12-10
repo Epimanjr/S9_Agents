@@ -9,6 +9,7 @@ import fr.miage.supermarche.util.Stock;
 import fr.miage.supermarche.util.Tarification;
 import fr.miage.supermarche.util.strategy.StockSimpleStrategy;
 import fr.miage.supermarche.util.strategy.TarificationSimpleStrategy;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -84,7 +85,7 @@ public class SpermarcheBehavior extends TickerBehaviour {
      */
     @Override
     protected void onTick() {
-        System.out.println("onTick");
+        System.out.println("\n[INTERNE] Système de gestion ON");
         // Gestion des stocks
         this.stock.analyse();
         // Envoyer la map this.stock.aCommander à la gestion des fournisseurs si elle n'est pas vide
@@ -94,7 +95,6 @@ public class SpermarcheBehavior extends TickerBehaviour {
             message.aCommander = this.stock.getaCommander();
             // TODO : Envoyer le message à FournisseurBehavior
             // Je ne pense pas que la méthode envoyerMessage fait le job...
-            System.out.println("il est temps d'envoyer un message");
             this.envoyerMessage(message);
         }
 
@@ -121,7 +121,7 @@ public class SpermarcheBehavior extends TickerBehaviour {
         
         // Gestion des PVHT (Prix de Vente Hors Taxes)
         this.tarification.update();
-        
+        System.out.println("[INTERNE] Système de gestion OFF\n");
     }
     
     /**
@@ -132,6 +132,7 @@ public class SpermarcheBehavior extends TickerBehaviour {
         try {
             // création du message pour JADE
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            msg.addReceiver(new AID("supermarche", AID.ISLOCALNAME));
             msg.setContentObject(s);
             
             // envoit du message

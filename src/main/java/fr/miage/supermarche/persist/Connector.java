@@ -153,16 +153,16 @@ public class Connector {
             ClassLoader classLoader = getClass().getClassLoader();
             File file = new File(classLoader.getResource("bdd/connexion.properties").getFile());
 
-            System.out.println(file.getAbsolutePath());
+            System.out.println("[BDD] Chemin du fichier properties: "+file.getAbsolutePath());
             input = new FileInputStream(file);
 
             // load a properties file
             prop.load(input);
 
             // get the property value and print it out
-            System.out.println(prop.getProperty("database"));
-            System.out.println(prop.getProperty("dbuser"));
-            System.out.println(prop.getProperty("dbpassword"));
+            System.out.println("[BDD] Base de données: "+prop.getProperty("database"));
+            System.out.println("[BDD] Utilisateur: "+prop.getProperty("dbuser"));
+            System.out.println("[BDD] Mot de passe: "+prop.getProperty("dbpassword"));
 
             setConnectionInformation(prop.getProperty("database"), prop.getProperty("dbuser"), prop.getProperty("dbpassword"));
         } catch (IOException ex) {
