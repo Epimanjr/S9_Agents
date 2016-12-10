@@ -1,5 +1,7 @@
 package fr.miage.supermarche.persist;
 
+import fr.miage.supermarche.util.ApiProduit;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -250,8 +252,8 @@ public class Produit {
     }
 
 
-    public fr.miage.agents.api.model.Produit toApiProduit(){
-        fr.miage.agents.api.model.Produit evilProd = new fr.miage.agents.api.model.Produit();
+    public ApiProduit toApiProduit(){
+        ApiProduit evilProd = new ApiProduit();
         evilProd.idProduit = this.id;
         //public Categorie idCategorie; TODO
         evilProd.nomProduit = this.nom;
