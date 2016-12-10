@@ -157,8 +157,8 @@ public class Produit {
      */
     public void update() throws SQLException {
         String sql = "UPDATE produit "
-                + "SET nomProduit='" + this.nomProduit + "'"
-                + ", marqueProduit='" + this.marqueProduit + "'"
+                + "SET nomProduit='" + this.nomProduit.replaceAll("'", "") + "'"
+                + ", marqueProduit='" + this.marqueProduit.replaceAll("'", "") + "'"
                 + ", descriptionProduit='" + this.descriptionProduit.replaceAll("'", "") + "'"
                 + ", prixProduit=" + this.prixProduit
                 + ", prixAchat=" + this.prixAchat
