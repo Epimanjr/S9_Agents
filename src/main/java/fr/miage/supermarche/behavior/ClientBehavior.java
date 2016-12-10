@@ -5,7 +5,7 @@ import fr.miage.agents.api.message.recherche.Rechercher;
 import fr.miage.agents.api.message.recherche.ResultatRecherche;
 import fr.miage.agents.api.message.relationclientsupermarche.Achat;
 import fr.miage.agents.api.message.relationclientsupermarche.ResultatDistance;
-import fr.miage.agents.api.model.Produit;
+import fr.miage.supermarche.persist.Produit;
 import fr.miage.supermarche.persist.RequetesClient;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -15,9 +15,13 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -89,7 +93,7 @@ public class ClientBehavior extends CyclicBehaviour {
     private void gererRecherche(Rechercher r) {
         // Récupération de notre liste de produits en fonction des critères
         List<Integer> ids = new ArrayList<>();
-        List<Produit> produits = new ArrayList<Produit>();
+
         try {
             ids = RequetesClient.getIdWithCriteres("", r.nomCategorie, r.marque, ((int) r.prixMin), ((int) r.prixMax));
         } catch (SQLException ex) {
@@ -97,11 +101,34 @@ public class ClientBehavior extends CyclicBehaviour {
         }
 
         // TODO récupérer des produits avec un id long plutôt qu'une référence
-        // ids.forEach(it -> produits.add(Produit.getByReference(it)));
-        
-// on met notre liste dans un message de l'api
+
+        ArrayList<Produit> produits = new ArrayList<>();
+        ArrayList<Integer> notFound = new ArrayList<>();
+
+        ids.stream().map(id -> {
+            // for each id, make an hmap of {"id" -> id,  "produit" -> ¿Produit? }
+            return new HashMap<String, Object>(){{
+                        put("id", id);
+                        put("produit", Produit.getById((long) id));
+                    }};
+        }
+        ).forEach(hmap -> {
+            // Get the Produit. Maybe there is no product, so it's Optional.
+            Optional<Produit> produit = (Optional<Produit>) hmap.get("produit");
+            int id  = (int) hmap.get("id");  // get the id too
+
+            if(produit.isPresent())
+                produits.add(produit.get());
+            else
+                notFound.add(id);
+
+            // Now we know which ones are found and which ones are not.
+
+        });
+
+        // on met notre liste dans un message de l'api
         ResultatRecherche rr = new ResultatRecherche();
-        rr.produitList = produits;
+        rr.produitList = produits.stream().map(Produit::toApiProduit).collect(Collectors.toList());
         rr.Session = r.session;
         
         // on envoit le message

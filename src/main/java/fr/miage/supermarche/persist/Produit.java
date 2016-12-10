@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  *
@@ -13,6 +14,12 @@ public class Produit {
 
     private static final String TABLE_NAME = "produit";
     private static final String[] FIELDS = {"reference", "nom", "description", "marque", "type", "prix", "stock"};
+
+
+    /**
+     * Référence numérique ( ¿clé primaire? )
+     */
+    private int id;
 
     /**
      * Référence du produit (clé primaire)
@@ -52,6 +59,17 @@ public class Produit {
     public Produit() {
     }
 
+    private  Produit(ResultSet rs) throws SQLException {
+        id = rs.getInt("id");
+        reference = rs.getString("reference");
+        nom = rs.getString("nom");
+        description = rs.getString("description");
+        marque = rs.getString("marque");
+        type = rs.getString("type");
+        prix = rs.getDouble("prix");
+        stock = rs.getInt("stock");
+    }
+
     public Produit(String reference, String nom, String description, String marque, String type, double prix, int stock) {
         this.reference = reference;
         this.nom = nom;
@@ -62,72 +80,42 @@ public class Produit {
         this.stock = stock;
     }
 
-    public static Produit getByReference(String ref) throws SQLException {
-        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE reference' = " + ref + "'";
-        ResultSet results = Connector.select(sql);
 
+    private static ArrayList<Produit> fetchWithQuery(String query) throws SQLException{
+        ResultSet results = Connector.select(query);
         ArrayList<Produit> produits = new ArrayList<>();
         while (results.next()) {
             // Récupération des informations de la BDD
-            String reference = results.getString("reference");
-            String nom = results.getString("nom");
-            String description = results.getString("description");
-            String marque = results.getString("marque");
-            String type = results.getString("type");
-            Double prix = results.getDouble("prix");
-            Integer stock = results.getInt("stock");
-
-            Produit produit = new Produit(reference, nom, description, marque, type, prix, stock);
-            produits.add(produit);
+            Produit p = new Produit(results);
+            produits.add(p);
         }
+        return produits;
+    }
 
-        return produits.get(0);
+    public static Optional<Produit> getById(Long id) {
+        final String q = "SELECT * FROM " + TABLE_NAME + "WHERE id = " + id  + ";";
+        try {
+            Produit p = fetchWithQuery(q).get(0);
+            return  Optional.of(p);
+        } catch (SQLException | ArrayIndexOutOfBoundsException e) {
+            return Optional.empty();
+        }
+    }
+
+    public static Produit getByReference(String ref) throws SQLException {
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE reference = '" + ref + "'";
+        return fetchWithQuery(sql).get(0);
     }
     
     public static ArrayList<Produit> getAllProduit() throws SQLException {
         String sql = "SELECT * FROM " + TABLE_NAME;
-        ResultSet results = Connector.select(sql);
-
-        ArrayList<Produit> produits = new ArrayList<>();
-        while (results.next()) {
-            // Récupération des informations de la BDD
-            String reference = results.getString("reference");
-            String nom = results.getString("nom");
-            String description = results.getString("description");
-            String marque = results.getString("marque");
-            String type = results.getString("type");
-            Double prix = results.getDouble("prix");
-            Integer stock = results.getInt("stock");
-
-            Produit produit = new Produit(reference, nom, description, marque, type, prix, stock);
-            produits.add(produit);
-        }
-
-        return produits;
+        return fetchWithQuery(sql);
     }
     
     public static ArrayList<Produit> getAllProduitByCriteres(String criteres) throws SQLException {
         // TODO Parser
         String sql = "SELECT * FROM " + TABLE_NAME;
-        
-        ResultSet results = Connector.select(sql);
-
-        ArrayList<Produit> produits = new ArrayList<>();
-        while (results.next()) {
-            // Récupération des informations de la BDD
-            String reference = results.getString("reference");
-            String nom = results.getString("nom");
-            String description = results.getString("description");
-            String marque = results.getString("marque");
-            String type = results.getString("type");
-            Double prix = results.getDouble("prix");
-            Integer stock = results.getInt("stock");
-
-            Produit produit = new Produit(reference, nom, description, marque, type, prix, stock);
-            produits.add(produit);
-        }
-
-        return produits;
+        return fetchWithQuery(sql);
     }
 
     public void insert() throws SQLException {
@@ -197,6 +185,14 @@ public class Produit {
         return true;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getReference() {
         return reference;
     }
@@ -251,6 +247,18 @@ public class Produit {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+
+    public fr.miage.agents.api.model.Produit toApiProduit(){
+        fr.miage.agents.api.model.Produit evilProd = new fr.miage.agents.api.model.Produit();
+        evilProd.idProduit = this.id;
+        //public Categorie idCategorie; TODO
+        evilProd.nomProduit = this.nom;
+        evilProd.descriptionProduit = this.description;
+        evilProd.prixProduit = (float) this.prix;
+        evilProd.marque = this.marque;
+        return evilProd;
     }
 
     @Override
