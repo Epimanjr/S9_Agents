@@ -34,13 +34,13 @@ public class RequetesInternes {
      * @param mapProduits Produits que l'on retire avec la quantité associée
      * @return Map pour avoir le compte-rendu des produits retirés
      */
-    public static HashMap<Integer, Boolean> retirerProduits(HashMap<Integer, Integer> mapProduits) {
-        HashMap<Integer, Boolean> mapResults = new HashMap<>();
+    public static HashMap<Long, Integer> retirerProduits(HashMap<Long, Integer> mapProduits) {
+        HashMap<Long, Integer> mapResults = new HashMap<>();
 
         // Parcours des produits de la map 
-        Iterator<Integer> itProduits = mapProduits.keySet().iterator();
+        Iterator<Long> itProduits = mapProduits.keySet().iterator();
         while (itProduits.hasNext()) {
-            Integer idProduit = itProduits.next();
+            Long idProduit = itProduits.next();
             Integer qteProduit = mapProduits.get(idProduit);
 
             mapResults.put(idProduit, retirerProduit(idProduit, qteProduit));
@@ -75,9 +75,9 @@ public class RequetesInternes {
      *
      * @param idProduit Identifiant du produit
      * @param qteProduit Quantité à retirer
-     * @return Si bien retiré
+     * @return la quantité retirée, la valeur du stock si la quantité > au stock
      */
-    public static boolean retirerProduit(Integer idProduit, Integer qteProduit) {
+    public static Integer retirerProduit(Long idProduit, Integer qteProduit) {
         String sql = "SELECT stock FROM produit WHERE id=" + idProduit;
         ResultSet result;
         try {
@@ -88,7 +88,9 @@ public class RequetesInternes {
                     Integer newStock = stockProduit - qteProduit;
                     String sqlUpdate = "UPDATE produit set stock=" + newStock + " WHERE id=" + idProduit;
                     Connector.insert(sqlUpdate);
-                    return true;
+                    return qteProduit;
+                } else {
+                    return stockProduit;
                 }
             }
         } catch (SQLException ex) {
@@ -96,7 +98,7 @@ public class RequetesInternes {
             ex.printStackTrace();
         }
 
-        return false;
+        return -1;
     }
 
     /**

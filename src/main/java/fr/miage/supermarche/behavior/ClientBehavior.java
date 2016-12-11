@@ -50,7 +50,7 @@ public class ClientBehavior extends CyclicBehaviour {
                             break;
 
                         // On reçoit une demande pour acheter des produits
-                        case InitierAchat:
+                        case AchatClient:
                             this.gererAchat(recu);
                             break;
                         // Demande de la distance
@@ -80,18 +80,19 @@ public class ClientBehavior extends CyclicBehaviour {
 
         // TODO Gérer un achat
         resultatAchat.courses = new HashMap<>();
-        Iterator<Integer> itProduits = achat.listeCourses.keySet().iterator();
+        Iterator<Long> itProduits = achat.listeCourses.keySet().iterator();
         while (itProduits.hasNext()) {
-            Integer idProduit = itProduits.next();
+            Long idProduit = itProduits.next();
             Integer qteProduit = achat.listeCourses.get(idProduit);
 
+            // on retourne la quantité de produit, si la quantité est supérieure au sotck, on retourne la valeur du stock
             boolean flagRetire = RequetesInternes.retirerProduit(idProduit, qteProduit);
             Integer value = (flagRetire) ? qteProduit : 0;
 
             fr.miage.agents.api.model.Produit p = new fr.miage.agents.api.model.Produit();
             p.idProduit = idProduit;
 
-            Map<Boolean, Integer> mapValue = new HashMap<>();
+            Map<fr.miage.agents.api.model.Produit, Integer> mapValue = new HashMap<>();
             mapValue.put(flagRetire, value);
 
             resultatAchat.courses.put(p, mapValue);
