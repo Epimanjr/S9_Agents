@@ -65,8 +65,8 @@ public class Supermarche extends Agent {
          * Instanciation des behaviors
          */
         ClientBehavior client = new ClientBehavior(this);
-        FournisseurBehavior fournisseur = new FournisseurBehavior(this, af);
-        SpermarcheBehavior supermarche = new SpermarcheBehavior(this, 6000, stock, periode, tarification);
+        FournisseurBehavior fournisseur = new FournisseurBehavior(this, af, stock);
+        SpermarcheBehavior supermarche = new SpermarcheBehavior(this, 20000, stock, periode, tarification);
         
         List<Behaviour> behaviors = Arrays.asList(fournisseur, client, supermarche);
         

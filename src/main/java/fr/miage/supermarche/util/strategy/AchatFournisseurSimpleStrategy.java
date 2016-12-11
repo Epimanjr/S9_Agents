@@ -64,6 +64,10 @@ public class AchatFournisseurSimpleStrategy implements AchatFournisseurStrategy 
             Integer qteSouhaitee = af.getQteSouhaitee();
             Integer qteDisponible = af.getQteDisponibleChezFournisseur();
             
+            System.out.println("produit: "+produit.getIdProduit());
+            System.out.println("qteSouhaitee: "+qteSouhaitee);
+            System.out.println("qteDispo:"+qteDisponible);
+            
             if (qteDisponible >= qteSouhaitee) {
                 // Si la quantité disponible est suffisante, on s'intéresse au prix proposé
                 
@@ -73,6 +77,7 @@ public class AchatFournisseurSimpleStrategy implements AchatFournisseurStrategy 
                 
                 if (prixPropose <= prixMax) {
                     // Si le prix ne dépasse pas notre seuil, on approuve
+                    System.out.println("[FOURNISSEUR] Etude d'un achat terminée ... oui");
                     return true;
                 } else {
                     // Si le prix est trop élevé, on propose un prix plus bas
@@ -82,6 +87,7 @@ public class AchatFournisseurSimpleStrategy implements AchatFournisseurStrategy 
                      * soit 60
                      */
                     af.setPrixANegocier(prixMax - (prixPropose - prixMax));
+                    System.out.println("[FOURNISSEUR] Etude d'un achat terminée ... non");
                     return false;
                 }
             }
@@ -89,7 +95,7 @@ public class AchatFournisseurSimpleStrategy implements AchatFournisseurStrategy 
         // Si le fournisseur n'a pas la quantité suffisante,
         // On l'indique en mettant le prix à négocier à (-1)
         af.setPrixANegocier(-1);
-        System.out.println("[FOURNISSEUR] Etude d'un achat terminée ...");
+        System.out.println("[FOURNISSEUR] Etude d'un achat terminée ... non");
         return false;
     }
 

@@ -106,7 +106,8 @@ public class Produit {
     }
 
     public static Optional<Produit> getById(Long id) {
-        final String q = "SELECT * FROM " + TABLE_NAME + "WHERE id = " + id + ";";
+        final String q = "SELECT * FROM " + TABLE_NAME + " WHERE idProduit = " + id + ";";
+        System.out.println(q);
         try {
             Produit p = fetchWithQuery(q).get(0);
             return Optional.of(p);

@@ -90,18 +90,6 @@ public class SpermarcheBehavior extends TickerBehaviour {
     @Override
     protected void onTick() {
         System.out.println("\n[INTERNE] Système de gestion ON");
-        // Gestion des stocks
-        this.stock.analyse();
-        // Envoyer la map this.stock.aCommander à la gestion des fournisseurs si elle n'est pas vide
-        // Cette map contient la liste des produits à réapprovisionner avec la quantité
-        if(!this.stock.getaCommander().isEmpty()) {
-            MessageInterne message = new MessageInterne(MessageInterneType.demandeReapprov);
-            message.aCommander = this.stock.getaCommander();
-            // TODO : Envoyer le message à FournisseurBehavior
-            // Je ne pense pas que la méthode envoyerMessage fait le job...
-            this.envoyerMessage(message);
-        }
-
         // Gestion des périodes
         this.periodeActuelle = this.periodeActuelle.define(this.periodeActuelle);;
         if(this.periodeActuelle.isPrevenirSoldesFlottantes()) {
@@ -130,8 +118,21 @@ public class SpermarcheBehavior extends TickerBehaviour {
         } catch (SQLException ex) {
             Logger.getLogger(SpermarcheBehavior.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.tarification.setPeriodeType(this.periodeActuelle.getType());
         this.tarification.update(produits);
-        System.out.println("[INTERNE] Système de gestion OFF\n");
+        
+        // Gestion des stocks
+        this.stock.analyse();
+        // Envoyer la map this.stock.aCommander à la gestion des fournisseurs si elle n'est pas vide
+        // Cette map contient la liste des produits à réapprovisionner avec la quantité
+        if(!this.stock.getaCommander().isEmpty()) {
+            MessageInterne message = new MessageInterne(MessageInterneType.demandeReapprov);
+            message.aCommander = this.stock.getaCommander();
+            // TODO : Envoyer le message à FournisseurBehavior
+            // Je ne pense pas que la méthode envoyerMessage fait le job...
+            this.envoyerMessage(message);
+        }
+        System.out.println("[INTERNE] Système de gestion OFF\n " + this.periodeActuelle.getType());
     }
     
     /**

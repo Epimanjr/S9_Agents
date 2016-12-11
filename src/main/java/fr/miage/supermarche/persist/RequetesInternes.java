@@ -108,13 +108,13 @@ public class RequetesInternes {
      */
     public static boolean ajouterProduit(Integer idProduit, Integer qteProduit) {
         try {
-            String sql = "SELECT stock FROM produit WHERE id=" + idProduit;
+            String sql = "SELECT stock FROM produit WHERE idProduit=" + idProduit;
             ResultSet result = Connector.select(sql);
             if (result.next()) {
                 Integer stockProduit = result.getInt("stock");
                 Integer newStock = stockProduit + qteProduit;
 
-                String sqlUpdate = "UPDATE produit set stock=" + newStock + " WHERE id=" + idProduit;
+                String sqlUpdate = "UPDATE produit set stock=" + newStock + " WHERE idProduit=" + idProduit;
                 Connector.insert(sqlUpdate);
                 return true;
             }

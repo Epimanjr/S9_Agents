@@ -23,7 +23,7 @@ public class Stock{
      * Liste des produits à commander/réapprovisionner
      * ID du produit -> qte à commander
      */
-    public Map<Integer,Integer> aCommander;
+    public Map<Long,Integer> aCommander;
     
     public Stock() {
         this.aCommander = new HashMap<>();
@@ -47,11 +47,11 @@ public class Stock{
         this.strategy = strategy;
     }
 
-    public Map<Integer, Integer> getaCommander() {
+    public Map<Long, Integer> getaCommander() {
         return aCommander;
     }
 
-    public void setaCommander(Map<Integer, Integer> aCommander) {
+    public void setaCommander(Map<Long, Integer> aCommander) {
         this.aCommander = aCommander;
     }
     

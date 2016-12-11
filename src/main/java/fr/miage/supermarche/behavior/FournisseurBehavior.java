@@ -14,6 +14,7 @@ import fr.miage.supermarche.persist.RequetesInternes;
 import fr.miage.supermarche.util.AchatFournisseur;
 import fr.miage.supermarche.util.MessageInterne;
 import fr.miage.supermarche.util.SessionAchat;
+import fr.miage.supermarche.util.Stock;
 import fr.miage.supermarche.util.strategy.AchatFournisseurSimpleStrategy;
 import jade.core.AID;
 import jade.core.Agent;
@@ -51,8 +52,13 @@ public class FournisseurBehavior extends CyclicBehaviour {
     private Map<UUID, SessionAchat> sessionsActives;
 
     /**
-     * Construit un comportement fournisseur depuis un agent
-     * (stratégie simple prédéfinie)
+     * Stock à gérer
+     */
+    private Stock stock;
+
+    /**
+     * Construit un comportement fournisseur depuis un agent (stratégie simple
+     * prédéfinie)
      *
      * @param a Agent initial qui adoptera ce comportement
      */
@@ -62,33 +68,45 @@ public class FournisseurBehavior extends CyclicBehaviour {
         this.achatFournisseur = new AchatFournisseur();
         this.achatFournisseur.setStrategy(new AchatFournisseurSimpleStrategy());
     }
-    
+
     /**
      * Construit un comportement fournisseur depuis un agent
      *
-     * @param a     Agent initial qui adoptera ce comportement
-     * @param af    Gestion des achats fournisseur
+     * @param a Agent initial qui adoptera ce comportement
+     * @param af Gestion des achats fournisseur
      */
-    public FournisseurBehavior(Agent a, AchatFournisseur af) {
+    public FournisseurBehavior(Agent a, AchatFournisseur af, Stock s) {
         super(a);
         this.sessionsActives = new HashMap<>();
         this.achatFournisseur = af;
+        this.stock = s;
     }
-    
+
     @Override
     public void action() {
         boolean message = false;
-        boolean messageInterne = true;
+        boolean messageInterne = false;
         try {
             ACLMessage aclMsg = this.getAgent().receive();
 
             // On attend de recevoir des messages
             if (aclMsg != null) {
                 // Si on reçoit un message
-                
+
+                try {
+                    MessageInterne recu = (MessageInterne) aclMsg.getContentObject();
+                    messageInterne = true;
+                } catch (Exception e) {
+                }
+                try {
+                    Message recu = (Message) aclMsg.getContentObject();
+                    message = true;
+                } catch (Exception e) {
+                }
+
                 //if (aclMsg.getContentObject() instanceof MessageInterne) {
                 if (messageInterne) {
-                    System.out.println("[FOURNISSEUR] Message interne reçu");
+                    System.out.println("\n[FOURNISSEUR] Message interne reçu");
                     // Si c'est un message interne (envoyé via SupermarcheBehavior par exemple)
                     MessageInterne recu = (MessageInterne) aclMsg.getContentObject();
                     switch (recu.type) {
@@ -96,7 +114,7 @@ public class FournisseurBehavior extends CyclicBehaviour {
                             System.out.println("[FOURNISSEUR] Le message est une demande de réapprovisionnement");
                             // ETAPE 0 : On reçoit une demande de réapprovisionnement
                             // Pour tous les éléments de la liste aCommander
-                            for (Map.Entry<Integer, Integer> aCommander : recu.aCommander.entrySet()) {
+                            for (Map.Entry<Long, Integer> aCommander : recu.aCommander.entrySet()) {
                                 // ETAPTE 1 : On envoie une demande InitierAchat aux fournisseurs
                                 UUID UUIDsessionActive = UUID.randomUUID();
                                 InitierAchat ia = new InitierAchat();
@@ -131,6 +149,9 @@ public class FournisseurBehavior extends CyclicBehaviour {
                             Integer idProduit = Integer.parseInt(rfa.idProduit + "");
                             Integer qteAchetee = rfa.quantiteProduit;
                             RequetesInternes.ajouterProduit(idProduit, qteAchetee);
+                            System.out.println("AJOUTE: "+idProduit);
+                            Integer qteACommander = this.stock.getaCommander().get(rfa.idProduit);
+                            this.stock.getaCommander().replace(rfa.idProduit, (qteAchetee - qteACommander));
                             this.sessionsActives.remove(rfa.session);
                             break;
                         case ResultatNegociation:

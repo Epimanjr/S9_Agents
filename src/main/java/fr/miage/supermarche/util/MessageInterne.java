@@ -14,7 +14,7 @@ public class MessageInterne implements Serializable {
     /**
      * Utile si type = demandeReapprov
      */
-    public Map<Integer, Integer> aCommander;
+    public Map<Long, Integer> aCommander;
 
     public MessageInterne(MessageInterneType type) {
         this.type = type;
