@@ -6,22 +6,16 @@
 package fr.miage.supermarche.test;
 
 import fr.miage.agents.api.message.Message;
-import fr.miage.agents.api.message.recherche.Rechercher;
 import fr.miage.agents.api.message.recherche.ResultatRecherche;
-import fr.miage.agents.api.message.relationclientsupermarche.Achat;
 import fr.miage.agents.api.message.relationclientsupermarche.ResultatAchat;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,8 +24,6 @@ import java.util.logging.Logger;
  * @author kangoula
  */
 public class ClientTestBehavior extends CyclicBehaviour {
-
-    private static final MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
     
     public ClientTestBehavior(Agent a) {
         super(a);
@@ -40,31 +32,8 @@ public class ClientTestBehavior extends CyclicBehaviour {
     @Override
     public void action() {
         try {
-            System.out.println("[CLIENT_TEST] Recherche par id");
-            Rechercher id = new Rechercher();
-            id.idProduit = new Long(84);
-            id.session = UUID.randomUUID();
-            this.envoyerMessage(id);
 
-            System.out.println("[CLIENT_TEST] Recherche par critères");
-            Rechercher crit = new Rechercher();
-            crit.nomCategorie = "High-Tech";
-            crit.prixMax = 150;
-            crit.prixMin = 100;
-            crit.marque = "";
-            crit.session = UUID.randomUUID();
-            this.envoyerMessage(crit);
-            
-            System.out.println("[CLIENT_TEST] Achat");
-            Achat a = new Achat();
-            Map<Long, Integer> courses = new HashMap<>();
-            courses.put(new Long(1), 1);
-            a.Session = UUID.randomUUID();
-            a.listeCourses = courses;
-            this.envoyerMessage(a);
-
-            
-            Optional<ACLMessage> aclmsg = Optional.ofNullable(this.getAgent().blockingReceive(mt));
+            Optional<ACLMessage> aclmsg = Optional.ofNullable(this.getAgent().receive());
 
             if (aclmsg.isPresent()) {
                 Message recu = (Message) (aclmsg.get().getContentObject());
@@ -73,7 +42,7 @@ public class ClientTestBehavior extends CyclicBehaviour {
                     case ResultatRecherche:
                         ResultatRecherche rr = (ResultatRecherche) recu;
                         System.out.println("[CLIENT_TEST] Resultat de la recherche reçu");
-                        rr.produitList.forEach(p -> System.out.println("Produit : " + p.idProduit + ", " + p.nomProduit + ", " + p.idCategorie));
+                        rr.produitList.forEach(p -> System.out.println("Produit : " + p.idProduit + ", " + p.nomProduit ));
                         break;
                     case ResultatAchatClient:
                         ResultatAchat ra = (ResultatAchat) recu;

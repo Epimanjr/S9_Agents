@@ -7,6 +7,7 @@ package fr.miage.supermarche.test;
 
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.ThreadedBehaviourFactory;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -19,6 +20,8 @@ import java.util.List;
  * @author kangoula
  */
 public class ClientTest extends Agent{
+    
+    private ThreadedBehaviourFactory tbf = new ThreadedBehaviourFactory();
     
     protected void setup() {
         System.out.println("\n[CLIENT_TEST] Lancement de '" + this.getLocalName() + "'");
@@ -41,10 +44,12 @@ public class ClientTest extends Agent{
         /**
          * Instanciation des behaviors
          */
-        ClientTestBehavior ctb = new ClientTestBehavior(this);
+        List<Behaviour> behaviors = Arrays.asList(
+                new ClientTestBehavior(this), 
+                new ClientTestRechercheId(this), 
+                new ClientTestRechercheCritere(this),
+                new ClientTestAchat(this));
         
-        List<Behaviour> behaviors = Arrays.asList(ctb);
-        
-        behaviors.forEach(it -> addBehaviour(it));
+        behaviors.forEach(it -> addBehaviour(tbf.wrap(it)));
     }
 }
