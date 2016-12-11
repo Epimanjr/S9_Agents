@@ -57,7 +57,7 @@ public class StockSimpleStrategy implements StockStrategy {
         int qteManquante;
         try {
             System.out.println("[INTENRE] Analyse des stocks en cours ...");
-           s.aCommander.clear();
+            s.aCommander.clear();
             // Pour chaque quantité minimale par produit
             for (Map.Entry<String, Integer> qteMinProduit : this.qteMinProduits.entrySet()) {
                 Produit produit = Produit.getByReference(qteMinProduit.getKey());
