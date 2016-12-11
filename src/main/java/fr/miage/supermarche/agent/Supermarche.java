@@ -2,7 +2,7 @@ package fr.miage.supermarche.agent;
 
 import fr.miage.supermarche.behavior.ClientBehavior;
 import fr.miage.supermarche.behavior.FournisseurBehavior;
-import fr.miage.supermarche.behavior.SpermarcheBehavior;
+import fr.miage.supermarche.behavior.SupermarcheBehavior;
 import fr.miage.supermarche.util.AchatFournisseur;
 import fr.miage.supermarche.util.Periode;
 import fr.miage.supermarche.util.PeriodeType;
@@ -66,7 +66,7 @@ public class Supermarche extends Agent {
          */
         ClientBehavior client = new ClientBehavior(this);
         FournisseurBehavior fournisseur = new FournisseurBehavior(this, af, stock);
-        SpermarcheBehavior supermarche = new SpermarcheBehavior(this, 20000, stock, periode, tarification);
+        SupermarcheBehavior supermarche = new SupermarcheBehavior(this, 20000, stock, periode, tarification);
         
         List<Behaviour> behaviors = Arrays.asList(fournisseur, client, supermarche);
         

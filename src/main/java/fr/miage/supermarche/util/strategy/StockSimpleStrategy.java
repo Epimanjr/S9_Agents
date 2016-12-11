@@ -1,6 +1,6 @@
 package fr.miage.supermarche.util.strategy;
 
-import fr.miage.supermarche.behavior.SpermarcheBehavior;
+import fr.miage.supermarche.behavior.SupermarcheBehavior;
 import fr.miage.supermarche.persist.Produit;
 import fr.miage.supermarche.util.Stock;
 import java.sql.SQLException;
@@ -69,7 +69,7 @@ public class StockSimpleStrategy implements StockStrategy {
             }
             System.out.println("[INTENRE] Analyse des stocks en cours terminée");
         } catch (SQLException ex) {
-            Logger.getLogger(SpermarcheBehavior.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SupermarcheBehavior.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

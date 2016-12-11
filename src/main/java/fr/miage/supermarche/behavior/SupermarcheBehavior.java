@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  * @author Guillaume DÉNISSE
  * @author Geoffrey GAILLARD
  */
-public class SpermarcheBehavior extends TickerBehaviour {
+public class SupermarcheBehavior extends TickerBehaviour {
 
     /**
      * Stock à gérer
@@ -54,7 +54,7 @@ public class SpermarcheBehavior extends TickerBehaviour {
      * @param a         Agent implémentant ce comportement
      * @param period    Le comportement est répété selon cette période
      */
-    public SpermarcheBehavior(Agent a, long period) {
+    public SupermarcheBehavior(Agent a, long period) {
         super(a, period);
         // Création d'un stock et sélection de la stratégie
         this.stock = new Stock();
@@ -77,7 +77,7 @@ public class SpermarcheBehavior extends TickerBehaviour {
      * @param periode       Gestion de la période courante
      * @param tarification  Gestion de la tarification
      */
-    public SpermarcheBehavior(Agent a, long period, Stock stock, Periode periode, Tarification tarification) {
+    public SupermarcheBehavior(Agent a, long period, Stock stock, Periode periode, Tarification tarification) {
         super(a, period);
         this.stock = stock;
         this.periodeActuelle = periode;
@@ -116,7 +116,7 @@ public class SpermarcheBehavior extends TickerBehaviour {
         try {
             produits = Produit.getAllProduit();
         } catch (SQLException ex) {
-            Logger.getLogger(SpermarcheBehavior.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SupermarcheBehavior.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.tarification.setPeriodeType(this.periodeActuelle.getType());
         this.tarification.update(produits);
@@ -150,7 +150,7 @@ public class SpermarcheBehavior extends TickerBehaviour {
             this.getAgent().send(msg);
             
         } catch (IOException ex) {
-            Logger.getLogger(SpermarcheBehavior.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SupermarcheBehavior.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
