@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * @author Guillaume DENIS
  */
 public class ClientBehavior extends CyclicBehaviour {
-
+    
     public ClientBehavior(Agent a) {
         super(a);
     }
@@ -78,7 +78,6 @@ public class ClientBehavior extends CyclicBehaviour {
         ResultatAchat resultatAchat = new ResultatAchat();
         resultatAchat.session = achat.Session;
 
-        // TODO Gérer un achat
         resultatAchat.courses = new HashMap<>();
         Iterator<Long> itProduits = achat.listeCourses.keySet().iterator();
         while (itProduits.hasNext()) {
@@ -86,16 +85,12 @@ public class ClientBehavior extends CyclicBehaviour {
             Integer qteProduit = achat.listeCourses.get(idProduit);
 
             // on retourne la quantité de produit, si la quantité est supérieure au sotck, on retourne la valeur du stock
-            boolean flagRetire = RequetesInternes.retirerProduit(idProduit, qteProduit);
-            Integer value = (flagRetire) ? qteProduit : 0;
+            int qteRetiree = RequetesInternes.retirerProduit(idProduit, qteProduit);
 
             fr.miage.agents.api.model.Produit p = new fr.miage.agents.api.model.Produit();
             p.idProduit = idProduit;
 
-            Map<fr.miage.agents.api.model.Produit, Integer> mapValue = new HashMap<>();
-            mapValue.put(flagRetire, value);
-
-            resultatAchat.courses.put(p, mapValue);
+            resultatAchat.courses.put(p, qteRetiree);
         }
 
         // Fin des courses !
@@ -104,11 +99,12 @@ public class ClientBehavior extends CyclicBehaviour {
 
     /**
      * Gère les demandes de distance
+     * @deprecated 
      */
     private void gererDemandeDistance() {
         // on récupère notre distance \m/
         double distance = 66.6;
-        int delai = 3;
+        int delai = 5;
         ResultatDistance rd = new ResultatDistance();
         rd.distance = distance;
         rd.delai = delai;
