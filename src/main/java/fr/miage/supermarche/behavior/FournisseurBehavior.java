@@ -148,7 +148,7 @@ public class FournisseurBehavior extends CyclicBehaviour {
                             SessionAchat sa_rfa = this.sessionsActives.get(rfa.session);
                             Integer idProduit = Integer.parseInt(rfa.idProduit + "");
                             Integer qteAchetee = rfa.quantiteProduit;
-                            RequetesInternes.ajouterProduit(idProduit, qteAchetee);
+                            RequetesInternes.ajouterProduit(idProduit, qteAchetee, rfa.prixFinal);
                             System.out.println("AJOUTE: "+idProduit);
                             Integer qteACommander = this.stock.getaCommander().get(rfa.idProduit);
                             this.stock.getaCommander().replace(rfa.idProduit, (qteAchetee - qteACommander));

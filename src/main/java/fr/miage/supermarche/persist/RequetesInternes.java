@@ -127,4 +127,31 @@ public class RequetesInternes {
 
         return false;
     }
+    
+    /**
+     * Permet d'ajouter un seul produit dans la base
+     *
+     * @param idProduit Identifiant du produit
+     * @param qteProduit Quantité à ajouter
+     * @return Si bien ajouté
+     */
+    public static boolean ajouterProduit(Integer idProduit, Integer qteProduit, float prixAchat) {
+        try {
+            String sql = "SELECT stock FROM produit WHERE idProduit=" + idProduit;
+            ResultSet result = Connector.select(sql);
+            if (result.next()) {
+                Integer stockProduit = result.getInt("stock");
+                Integer newStock = stockProduit + qteProduit;
+
+                String sqlUpdate = "UPDATE produit set stock=" + newStock + " , prixAchat=" + prixAchat + " WHERE idProduit=" + idProduit;
+                Connector.insert(sqlUpdate);
+                return true;
+            }
+        } catch (SQLException ex) {
+            System.err.println("Erreur: impossible de récupérer ou modifier le stock du produit " + idProduit);
+            ex.printStackTrace();
+        }
+
+        return false;
+    }
 }

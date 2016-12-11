@@ -6,6 +6,7 @@ import fr.miage.agents.api.message.negociation.FinaliserAchat;
 import fr.miage.agents.api.message.negociation.InitierAchat;
 import fr.miage.agents.api.message.negociation.ResultatFinalisationAchat;
 import fr.miage.agents.api.message.negociation.ResultatInitiationAchat;
+import fr.miage.supermarche.persist.Produit;
 import fr.miage.supermarche.util.SessionAchat;
 import jade.core.AID;
 import jade.core.Agent;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,7 +60,10 @@ public class FournisseurTestBehavior extends CyclicBehaviour {
                         ria.success = true;
                         ria.session = ia.session;
                         ria.quantiteDisponible = ia.quantite;
-                        ria.prixFixe = 1.25f;
+                        Optional<Produit> produit1 = Produit.getById(ia.idProduit);
+                        if (produit1.isPresent()) {
+                            ria.prixFixe = produit1.get().getPrixProduit() * 1.10f;
+                        }
                         this.sessionsActives.put(ria.session, new SessionAchat(ia.idProduit, ia.quantite, TypeMessage.Aide));
                         this.envoyerMessage(ria);
                         break;
@@ -68,6 +73,10 @@ public class FournisseurTestBehavior extends CyclicBehaviour {
                         rfa.session = fa.session;
                         rfa.idProduit = this.sessionsActives.get(fa.session).getIdProduit();
                         rfa.quantiteProduit = this.sessionsActives.get(fa.session).getQteSouhaitee();
+                        Optional<Produit> produit2 = Produit.getById(rfa.idProduit);
+                        if (produit2.isPresent()) {
+                            rfa.prixFinal = produit2.get().getPrixProduit() * 1.10f;
+                        }
                         System.out.println("[FOURNISSEUR_TEST] Demande de finalisation d'achat reçue (produit n°" + rfa.idProduit);
                         this.envoyerMessage(rfa);
                         break;
