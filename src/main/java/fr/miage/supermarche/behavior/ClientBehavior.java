@@ -10,6 +10,7 @@ import fr.miage.supermarche.persist.Produit;
 import fr.miage.supermarche.persist.RequetesClient;
 import fr.miage.supermarche.persist.RequetesInternes;
 import fr.miage.supermarche.util.ApiProduit;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -120,14 +121,14 @@ public class ClientBehavior extends CyclicBehaviour {
      */
     private void gererRecherche(Rechercher r) {
         Long id = r.idProduit;
-        if (id != null) {
+        if (id > 0) {
             rechercheProduitParId(r.idProduit, r.session);
         } else {
             rechercheProduitParCriteres(r);
         }
     }
 
-    private void rechercheProduitParId(long id, UUID session) {
+    private void rechercheProduitParId(Long id, UUID session) {
         Optional<Produit> maybe_p = Produit.getById(id);
         List<ApiProduit> ps = new LinkedList<>();
 
@@ -198,6 +199,7 @@ public class ClientBehavior extends CyclicBehaviour {
         try {
             // création du message pour JADE
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+            msg.addReceiver(new AID("client", AID.ISLOCALNAME));
             msg.setContentObject(s);
 
             // envoit du message

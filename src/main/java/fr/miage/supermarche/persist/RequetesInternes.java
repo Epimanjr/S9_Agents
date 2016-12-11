@@ -78,7 +78,7 @@ public class RequetesInternes {
      * @return la quantité retirée, la valeur du stock si la quantité > au stock
      */
     public static Integer retirerProduit(Long idProduit, Integer qteProduit) {
-        String sql = "SELECT stock FROM produit WHERE id=" + idProduit;
+        String sql = "SELECT stock FROM produit WHERE idProduit=" + idProduit;
         ResultSet result;
         try {
             result = Connector.select(sql);
@@ -86,7 +86,7 @@ public class RequetesInternes {
                 Integer stockProduit = result.getInt("stock");
                 if (stockProduit >= qteProduit) {
                     Integer newStock = stockProduit - qteProduit;
-                    String sqlUpdate = "UPDATE produit set stock=" + newStock + " WHERE id=" + idProduit;
+                    String sqlUpdate = "UPDATE produit set stock=" + newStock + " WHERE idProduit=" + idProduit;
                     Connector.insert(sqlUpdate);
                     return qteProduit;
                 } else {
