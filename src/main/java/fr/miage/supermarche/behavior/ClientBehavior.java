@@ -74,6 +74,7 @@ public class ClientBehavior extends CyclicBehaviour {
      * @param recu Message reçu.
      */
     private void gererAchat(Message recu) {
+        System.out.println("[SUPERMARCHE] Reçu demande d'achat");
         // Initialisation
         Achat achat = (Achat) recu;
         ResultatAchat resultatAchat = new ResultatAchat();
@@ -122,8 +123,10 @@ public class ClientBehavior extends CyclicBehaviour {
     private void gererRecherche(Rechercher r) {
         Long id = r.idProduit;
         if (id > 0) {
+            System.out.println("[SUPERMARCHE] Reçu Recherche par id");
             rechercheProduitParId(r.idProduit, r.session);
         } else {
+            System.out.println("[SUPERMARCHE] Reçu Recherche par critères");
             rechercheProduitParCriteres(r);
         }
     }
